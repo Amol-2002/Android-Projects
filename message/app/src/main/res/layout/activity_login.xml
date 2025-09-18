@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/edittext_bg"
+    android:padding="24dp">
+
+    <!-- Card View for Modern Look -->
+    <androidx.cardview.widget.CardView
+        android:id="@+id/loginCard"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        app:cardCornerRadius="20dp"
+        app:cardElevation="8dp"
+        android:backgroundTint="@android:color/white"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="24dp">
+
+            <!-- App Logo -->
+            <ImageView
+                android:id="@+id/appLogo"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:src="@drawable/login"
+                android:layout_gravity="center"
+                android:contentDescription="Logo" />
+
+            <!-- Title -->
+            <TextView
+                android:id="@+id/tvTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Welcome Back!"
+                android:textSize="22sp"
+                android:textStyle="bold"
+                android:textColor="#222222"
+                android:layout_marginTop="16dp"
+                android:layout_gravity="center" />
+
+            <!-- Subtitle -->
+            <TextView
+                android:id="@+id/tvSubtitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Login to continue"
+                android:textSize="14sp"
+                android:textColor="#777777"
+                android:layout_marginBottom="20dp"
+                android:layout_gravity="center" />
+
+            <!-- User ID -->
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Email or Username"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/etUserid"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textEmailAddress" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <!-- Password -->
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Password"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/etPassword"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textPassword" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <!-- Login Button -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnLogin"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Login"
+                android:layout_marginTop="16dp"
+                style="@style/Widget.MaterialComponents.Button"
+                app:cornerRadius="12dp"
+                app:backgroundTint="@color/purple_500"
+                android:textColor="@android:color/white"/>
+
+            <!-- Signup -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnGoToSignup"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="New user? Register here"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                app:cornerRadius="12dp"
+                android:layout_marginTop="16dp"/>
+
+
+            <!-- Progress Bar -->
+            <ProgressBar
+                android:id="@+id/progressBar"
+                android:visibility="gone"
+                android:layout_gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="?android:attr/progressBarStyleLarge"/>
+
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
