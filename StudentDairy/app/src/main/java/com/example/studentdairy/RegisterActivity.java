@@ -2,12 +2,9 @@ package com.example.studentdairy;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -26,10 +23,10 @@ import java.util.Map;
 
 public class RegisterActivity extends AppCompatActivity {
 
-    EditText etUsername, etEmail, etMobile, etPassword;
-    Spinner spGender;
+    EditText etMobile, etPassword;
     Button btnSignup;
     ProgressBar progressBar;
+    TextView tvLogin;
 
     private static final String SIGNUP_URL = "https://trifrnd.co.in/school/api/data.php?apicall=signup";
 
@@ -38,145 +35,94 @@ public class RegisterActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
-        etUsername = findViewById(R.id.etUsername);
-        etEmail = findViewById(R.id.etEmail);
+        // Initialize views
         etMobile = findViewById(R.id.etMobile);
         etPassword = findViewById(R.id.etPassword);
-        spGender = findViewById(R.id.spGender);
         btnSignup = findViewById(R.id.btnSignup);
         progressBar = findViewById(R.id.progressBar);
+        tvLogin = findViewById(R.id.tvLogin);
 
-        // Gender dropdown
-        String[] genders = {"Select Gender", "Male", "Female", "Other"};
-        spGender.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, genders));
-
+        // Signup button click
         btnSignup.setOnClickListener(v -> {
-            String username = etUsername.getText().toString().trim();
-            String email = etEmail.getText().toString().trim();
-            String mobile = etMobile.getText().toString().trim();
+            String userid = etMobile.getText().toString().trim();
             String password = etPassword.getText().toString().trim();
-            String gender = spGender.getSelectedItem().toString();
 
-            // --- VALIDATION ---
-            if (username.isEmpty()) {
-                etUsername.setError("Username required");
-                etUsername.requestFocus();
-                return;
+            if (validateInput(userid, password)) {
+                registerUser(userid, password);
             }
-
-            if (username.length() < 3) {
-                etUsername.setError("Username must be at least 3 characters");
-                etUsername.requestFocus();
-                return;
-            }
-
-            if (email.isEmpty()) {
-                etEmail.setError("Email required");
-                etEmail.requestFocus();
-                return;
-            }
-
-            if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-                etEmail.setError("Enter a valid email");
-                etEmail.requestFocus();
-                return;
-            }
-
-            if (mobile.isEmpty()) {
-                etMobile.setError("Mobile number required");
-                etMobile.requestFocus();
-                return;
-            }
-
-            if (!mobile.matches("\\d{10}")) {
-                etMobile.setError("Enter a valid 10-digit mobile number");
-                etMobile.requestFocus();
-                return;
-            }
-
-            if (password.isEmpty()) {
-                etPassword.setError("Password required");
-                etPassword.requestFocus();
-                return;
-            }
-
-            if (password.length() < 6) {
-                etPassword.setError("Password must be at least 6 characters");
-                etPassword.requestFocus();
-                return;
-            }
-
-            // Optional: Strong password (uppercase, number, special char)
-            /*
-            if (!password.matches("^(?=.*[0-9])(?=.*[A-Z])(?=.*[@#$%^&+=]).{6,}$")) {
-                etPassword.setError("Password must contain uppercase, number & special char");
-                etPassword.requestFocus();
-                return;
-            }
-            */
-
-            if (gender.equals("Select Gender")) {
-                Toast.makeText(RegisterActivity.this, "Please select a gender", Toast.LENGTH_SHORT).show();
-                return;
-            }
-
-            // All validations passed → register user
-            registerUser(username, email, gender, mobile, password);
         });
 
-        TextView tvLogin = findViewById(R.id.tvLogin); // Add this line
+        // Go to Login
         tvLogin.setOnClickListener(v -> {
-            Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
-            startActivity(intent);
-            finish(); // optional: close RegisterActivity
+            startActivity(new Intent(RegisterActivity.this, LoginActivity.class));
+            finish();
         });
-
     }
 
-    private void registerUser(String username, String email, String gender, String mobile, String password) {
-        progressBar.setVisibility(View.VISIBLE);
+    private boolean validateInput(String userid, String password) {
+        boolean isValid = true;
+
+        if (userid.isEmpty() || !userid.matches("\\d{10}")) {
+            etMobile.setError("Enter valid 10-digit mobile number");
+            isValid = false;
+        }
+
+        if (password.isEmpty() || password.length() < 4) {
+            etPassword.setError("Password must be at least 4 characters");
+            isValid = false;
+        }
+
+        return isValid;
+    }
+
+    private void registerUser(String userid, String password) {
+        progressBar.setVisibility(android.view.View.VISIBLE);
         btnSignup.setEnabled(false);
 
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, SIGNUP_URL,
+        StringRequest request = new StringRequest(Request.Method.POST, SIGNUP_URL,
                 response -> {
-                    progressBar.setVisibility(View.GONE);
+                    progressBar.setVisibility(android.view.View.GONE);
                     btnSignup.setEnabled(true);
+
+                    // Safe JSON parsing
                     try {
-                        JSONObject obj = new JSONObject(response);
-                        boolean error = obj.getBoolean("error");
-                        String message = obj.getString("message");
+                        String trimmed = response.trim();
+                        if (trimmed.startsWith("{")) {
+                            JSONObject obj = new JSONObject(trimmed);
+                            String message = obj.optString("message", "Response received");
+                            boolean error = obj.optBoolean("error", true);
 
-                        Toast.makeText(RegisterActivity.this, message, Toast.LENGTH_SHORT).show();
+                            Toast.makeText(RegisterActivity.this, message, Toast.LENGTH_SHORT).show();
 
-                        if (!error) {
-                            // Registration successful → Go to Login
-                            startActivity(new Intent(RegisterActivity.this, LoginActivity.class));
-                            finish();
+                            if (!error) {
+                                startActivity(new Intent(RegisterActivity.this, LoginActivity.class));
+                                finish();
+                            }
+                        } else {
+                            // Response is not JSON
+                            Toast.makeText(RegisterActivity.this, trimmed, Toast.LENGTH_SHORT).show();
                         }
-
                     } catch (JSONException e) {
                         e.printStackTrace();
-                        Toast.makeText(RegisterActivity.this, "JSON Error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(RegisterActivity.this, "Invalid response format", Toast.LENGTH_SHORT).show();
                     }
+
                 },
                 error -> {
-                    progressBar.setVisibility(View.GONE);
+                    progressBar.setVisibility(android.view.View.GONE);
                     btnSignup.setEnabled(true);
-                    Toast.makeText(RegisterActivity.this, "Volley Error: " + (error.getMessage() != null ? error.getMessage() : "Network Error"), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(RegisterActivity.this, "Network Error", Toast.LENGTH_SHORT).show();
                 }) {
             @Override
             protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<>();
-                params.put("username", username);
-                params.put("email", email);
-                params.put("gender", gender);
-                params.put("mobile", mobile);
+                params.put("userid", userid);
                 params.put("password", password);
                 return params;
             }
         };
 
-        RequestQueue requestQueue = Volley.newRequestQueue(this);
-        requestQueue.add(stringRequest);
+        RequestQueue queue = Volley.newRequestQueue(this);
+        queue.add(request);
     }
 }
