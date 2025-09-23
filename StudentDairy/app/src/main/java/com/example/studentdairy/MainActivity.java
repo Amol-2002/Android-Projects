@@ -1,11 +1,10 @@
 package com.example.studentdairy;
 
 import android.os.Bundle;
-import androidx.annotation.NonNull;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import android.view.MenuItem;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -30,13 +29,16 @@ public class MainActivity extends AppCompatActivity {
 
             if (id == R.id.nav_home) {
                 selectedFragment = new HomeFragment();
-            } else if (id == R.id.nav_attendance) {
-                selectedFragment = new AttendanceFragment();
+            } else if (id == R.id.nav_message) {
+                selectedFragment = new MessageFragment();
+            } else if (id == R.id.nav_idCard) {
+                selectedFragment = new IdcardFragment();
+            } else if (id == R.id.nav_notification) {
+                selectedFragment = new NotificationFragment();
             } else if (id == R.id.nav_profile) {
                 selectedFragment = new ProfileFragment();
-            } else if (id == R.id.nav_settings) {
-                selectedFragment = new SettingsFragment();
             }
+
 
             if (selectedFragment != null) {
                 getSupportFragmentManager().beginTransaction()

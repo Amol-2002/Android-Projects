@@ -1,15 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".HomeFragment">
 
-<!--    &lt;!&ndash; FrameLayout to hold fragments &ndash;&gt;-->
-<!--                                              <FrameLayout-->
-<!--                      android:id="@+id/fragment_container"-->
-<!--                       android:layout_width="match_parent"-->
-<!--                    android:layout_height="match_parent"/>-->
+    <!--    &lt;!&ndash; FrameLayout to hold fragments &ndash;&gt;-->
+    <!--                                              <FrameLayout-->
+    <!--                      android:id="@+id/fragment_container"-->
+    <!--                       android:layout_width="match_parent"-->
+    <!--                    android:layout_height="match_parent"/>-->
 
     <LinearLayout
         android:backgroundTint="#1E5AA8"
@@ -37,7 +38,7 @@
                 android:text="Welcome "
                 android:textColor="@color/white"
                 android:textSize="18sp"
-                android:paddingTop="8dp"/>
+                android:paddingTop="8dp" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -45,7 +46,7 @@
                 android:text="AMOL BAPU BAGUL"
                 android:textColor="@color/white"
                 android:textSize="20sp"
-                android:textStyle="bold"/>
+                android:textStyle="bold" />
 
         </LinearLayout>
 
@@ -58,9 +59,600 @@
             android:layout_height="70dp"
             android:src="@drawable/cloud_"
             android:layout_gravity="center_vertical"
-            android:background="@drawable/rounded_bg"/>
+            android:background="@drawable/rounded_bg" />
     </LinearLayout>
 
 
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="90dp"
+        android:layout_marginBottom="90dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp"
+            android:layout_marginTop="20dp">
+
+            <!-- Card Template -->
+            <LinearLayout
+                android:id="@+id/card_personal_details"
+                android:layout_width="wrap_content"
+                android:layout_height="100dp"
+                android:orientation="vertical"
+                android:background="@drawable/rounded_bg"
+                android:gravity="center_vertical"
+
+                android:elevation="4dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?attr/selectableItemBackground">
+
+                <TextView
+                    android:id="@+id/college_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAlignment="center"
+                    android:text="BAPUSAHEB SHIVAJIRAO DEORE COLLEGE OF ENGINEERING, DHULE"
+                    android:textColor="#000"
+                    android:textStyle="bold"
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="(MS)"
+                    android:layout_gravity="center"
+                    android:textColor="#000"
+                    android:textStyle="bold"
+                    android:textSize="20sp"
+                    android:layout_marginBottom="1dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="2024-2025"
+                    android:layout_gravity="center"
+                    android:textSize="16sp"
+                    android:textColor="#444" />
+            </LinearLayout>
+
+            <!-- Image Card -->
+            <LinearLayout
+                android:id="@+id/card_image"
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                android:orientation="vertical"
+                android:background="@drawable/rounded_bg"
+                android:gravity="center"
+                android:layout_marginTop="10dp"
+                android:elevation="4dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?attr/selectableItemBackground">
+
+                <ImageView
+                    android:id="@+id/swipeimage"
+                    android:paddingBottom="12dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/homebanner"
+                    android:scaleType="centerCrop"
+                    android:background="@drawable/rounded_bg"
+                    android:clipToOutline="true" />
+
+            </LinearLayout>
+            <!-- Attendance Card -->
+            <LinearLayout
+                android:id="@+id/attendance_card"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@drawable/rounded_bg"
+                android:padding="16dp"
+                android:layout_marginTop="10dp"
+
+                android:elevation="4dp">
+
+                <!-- Header -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:paddingBottom="8dp">
+
+                    <TextView
+                        android:id="@+id/tv_attendance_title"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:text="Attendance"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        android:textColor="@android:color/black" />
+
+<!--                    <ImageView-->
+<!--                        android:id="@+id/iv_refresh_attendance"-->
+<!--                        android:layout_width="24dp"-->
+<!--                        android:layout_height="24dp"-->
+<!--                        android:src="@drawable/ic_refresh"-->
+<!--                        app:tint="@android:color/black" />-->
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:paddingTop="4dp"
+                    android:paddingBottom="8dp">
+
+                    <TextView
+                        android:id="@+id/tv_theory_label"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Theory    "
+                        android:textSize="14sp"
+                        android:textColor="@android:color/black"
+                        android:layout_marginEnd="8dp"/>
+
+                    <ProgressBar
+                        android:id="@+id/progress_theory"
+                        style="@android:style/Widget.ProgressBar.Horizontal"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="8dp"
+                        android:progress="89"
+                        android:max="100"
+                        android:progressBackgroundTint="#EBE4E4"
+                        android:progressTint="#1E5AA8"
+                        android:layout_marginEnd="8dp"/>
+
+                    <TextView
+                        android:id="@+id/tv_theory_percentage"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="89%"
+                        android:textColor="@android:color/holo_red_dark"
+                        android:textSize="12sp"/>
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:paddingTop="4dp"
+                    android:paddingBottom="8dp">
+
+                    <TextView
+                        android:id="@+id/tv_Practical_label"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Practical"
+                        android:textSize="14sp"
+                        android:textColor="@android:color/black"
+                        android:layout_marginEnd="8dp"/>
+
+                    <ProgressBar
+                        android:id="@+id/progress_practical"
+                        style="@android:style/Widget.ProgressBar.Horizontal"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="8dp"
+                        android:progress="80"
+                        android:max="100"
+                        android:progressBackgroundTint="#EBE4E4"
+                        android:progressTint="#1E5AA8"
+                        android:layout_marginEnd="8dp"/>
+
+                    <TextView
+                        android:id="@+id/tv_Practical_percentage"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="80%"
+                        android:textColor="@android:color/holo_red_dark"
+                        android:textSize="12sp"/>
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:paddingTop="4dp"
+                    android:paddingBottom="8dp">
+
+                    <TextView
+                        android:id="@+id/tv_Overall_label"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Overall    "
+                        android:textSize="14sp"
+                        android:textColor="@android:color/black"
+                        android:layout_marginEnd="8dp"/>
+
+                    <ProgressBar
+                        android:id="@+id/progress_Overall"
+                        style="@android:style/Widget.ProgressBar.Horizontal"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="8dp"
+                        android:progress="84"
+                        android:max="100"
+                        android:progressBackgroundTint="#EBE4E4"
+                        android:progressTint="#1E5AA8"
+                        android:layout_marginEnd="8dp"/>
+
+                    <TextView
+                        android:id="@+id/tv_Overall_percentage"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="85%"
+                        android:textColor="@android:color/holo_red_dark"
+                        android:textSize="12sp"/>
+                </LinearLayout>
+
+            </LinearLayout>
+            <!-- Menu Grid -->
+            <GridLayout
+                android:id="@+id/menu_grid"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:alignmentMode="alignMargins"
+                android:columnCount="3"
+                android:padding="16dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/rounded_bg"
+                android:useDefaultMargins="true">
+
+                <!-- Attendance -->
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_columnWeight="1"
+                    android:orientation="vertical"
+                    android:gravity="center">
+
+                    <ImageView
+                        android:id="@+id/item_attendance"
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:src="@drawable/profile"
+                        android:background="@drawable/grid_item_background"
+                        app:tint="#fff"
+                        android:layout_marginBottom="8dp"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Attendance"
+                        android:textSize="12sp"
+                        android:textColor="#000000"
+                        android:gravity="center"/>
+                </LinearLayout>
+
+                <!-- Class Schedule -->
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_columnWeight="1"
+                    android:orientation="vertical"
+                    android:gravity="center">
+
+                    <ImageView
+                        android:id="@+id/item_class_schedule"
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:src="@drawable/profile"
+                        android:background="@drawable/grid_item_background"
+                        app:tint="#fff"
+                        android:layout_marginBottom="8dp"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Class Schedule"
+                        android:textSize="12sp"
+                        android:textColor="#000000"
+                        android:gravity="center"/>
+                </LinearLayout>
+
+                <!-- Online Classes -->
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_columnWeight="1"
+                    android:orientation="vertical"
+                    android:gravity="center">
+
+                    <ImageView
+                        android:id="@+id/onlineClasses_icon"
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:src="@drawable/profile"
+                        android:background="@drawable/grid_item_background"
+                        app:tint="#fff"
+                        android:layout_marginBottom="8dp"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Online Classes"
+                        android:textSize="12sp"
+                        android:textColor="#000000"
+                        android:gravity="center"/>
+                </LinearLayout>
+
+                <!-- Fees Paid -->
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_columnWeight="1"
+                    android:orientation="vertical"
+                    android:gravity="center">
+
+                    <ImageView
+                        android:id="@+id/feespaid_icon"
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:src="@drawable/profile"
+                        android:background="@drawable/grid_item_background"
+                        app:tint="#fff"
+                        android:layout_marginBottom="8dp"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Fees Paid"
+                        android:textSize="12sp"
+                        android:textColor="#000000"
+                        android:gravity="center"/>
+                </LinearLayout>
+
+                <!-- Register Subject -->
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_columnWeight="1"
+                    android:orientation="vertical"
+                    android:gravity="center">
+
+                    <ImageView
+                        android:id="@+id/registersubjects_icon"
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:src="@drawable/profile"
+                        android:background="@drawable/grid_item_background"
+                        app:tint="#fff"
+                        android:layout_marginBottom="8dp"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Register Subject"
+                        android:textSize="12sp"
+                        android:textColor="#000000"
+                        android:gravity="center"/>
+                </LinearLayout>
+
+                <!-- Certificate -->
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_columnWeight="1"
+                    android:orientation="vertical"
+                    android:gravity="center">
+
+                    <ImageView
+                        android:id="@+id/Certificate_icon"
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:src="@drawable/profile"
+                        android:background="@drawable/grid_item_background"
+                        app:tint="#fff"
+                        android:layout_marginBottom="8dp"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Certificate"
+                        android:textSize="12sp"
+                        android:textColor="#000000"
+                        android:gravity="center"/>
+                </LinearLayout>
+
+                <!-- Railway Concession -->
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_columnWeight="1"
+                    android:orientation="vertical"
+                    android:gravity="center">
+
+                    <ImageView
+                        android:id="@+id/railway_icon"
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:src="@drawable/profile"
+                        android:background="@drawable/grid_item_background"
+                        app:tint="#fff"
+                        android:layout_marginBottom="8dp"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Railway Concession"
+                        android:textSize="12sp"
+                        android:textColor="#000000"
+                        android:gravity="center"/>
+                </LinearLayout>
+
+                <!-- Calendar -->
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_columnWeight="1"
+                    android:orientation="vertical"
+                    android:gravity="center">
+
+                    <ImageView
+                        android:id="@+id/Calender_icon"
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:src="@drawable/profile"
+                        android:background="@drawable/grid_item_background"
+                        app:tint="#fff"
+                        android:layout_marginBottom="8dp"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Calendar"
+                        android:textSize="12sp"
+                        android:textColor="#000000"
+                        android:gravity="center"/>
+                </LinearLayout>
+
+                <!-- ITLE -->
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_columnWeight="1"
+                    android:orientation="vertical"
+                    android:gravity="center">
+
+                    <ImageView
+                        android:id="@+id/itle_icon"
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:src="@drawable/profile"
+                        android:background="@drawable/grid_item_background"
+                        app:tint="#fff"
+                        android:layout_marginBottom="8dp"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="ITLE"
+                        android:textSize="12sp"
+                        android:textColor="#000000"
+                        android:gravity="center"/>
+                </LinearLayout>
+
+            </GridLayout>
+            <LinearLayout
+
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:orientation="vertical"
+                android:background="@drawable/rounded_bg"
+                android:gravity="center_vertical"
+                android:layout_marginTop="10dp"
+                android:elevation="4dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?attr/selectableItemBackground">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Today's Schedule"
+                    android:layout_marginTop="10dp"
+                    android:layout_gravity="center"
+                    android:textColor="#000"
+                    android:textStyle="bold"
+                    android:textSize="20sp"
+                    />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:text="Today's Schedle not available!"
+                    android:layout_gravity="center"
+                    android:textSize="16sp"
+                    android:gravity="center"
+                    android:layout_margin="10dp"
+                    android:background="@drawable/rounded_bg"
+                    android:backgroundTint="#E6E1E1"
+                    android:textColor="#444" />
+            </LinearLayout>
+
+            <LinearLayout
+
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:orientation="vertical"
+                android:background="@drawable/rounded_bg"
+                android:gravity="center_vertical"
+                android:layout_marginTop="10dp"
+                android:elevation="4dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?attr/selectableItemBackground">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Today's Assignment"
+                    android:layout_marginTop="10dp"
+                    android:layout_gravity="center"
+                    android:textColor="#000"
+                    android:textStyle="bold"
+                    android:textSize="20sp"
+                    />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:text="Today's Assignment not available!"
+                    android:layout_gravity="center"
+                    android:textSize="16sp"
+                    android:gravity="center"
+                    android:layout_margin="10dp"
+                    android:background="@drawable/rounded_bg"
+                    android:backgroundTint="#E6E1E1"
+                    android:textColor="#444" />
+            </LinearLayout>
+
+            <LinearLayout
+
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:orientation="vertical"
+                android:background="@drawable/rounded_bg"
+                android:gravity="center_vertical"
+                android:layout_marginTop="10dp"
+                android:elevation="4dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?attr/selectableItemBackground">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Semester Wise Attendance  4"
+                    android:layout_marginTop="10dp"
+                    android:layout_gravity="center"
+                    android:textColor="#000"
+                    android:textStyle="bold"
+                    android:textSize="20sp"
+                    />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:text="Semester Wise Attendance not available!"
+                    android:layout_gravity="center"
+                    android:textSize="16sp"
+                    android:gravity="center"
+                    android:layout_margin="10dp"
+                    android:background="@drawable/rounded_bg"
+                    android:backgroundTint="#E6E1E1"
+                    android:textColor="#444" />
+            </LinearLayout>
+            </LinearLayout>
+
+</ScrollView>
 
 </FrameLayout>

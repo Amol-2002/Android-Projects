@@ -1,33 +1,20 @@
 package com.example.studentdairy;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.TextView;
+import android.widget.LinearLayout;
 
 import androidx.fragment.app.Fragment;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
-
-import static android.content.Context.MODE_PRIVATE;
 
 public class ProfileFragment extends Fragment {
 
-    private TextView txtMobile, txtName, txtStudentId, txtClassSection;
-
     public ProfileFragment() {
         // Required empty public constructor
-    }
-
-    public static ProfileFragment newInstance(String param1, String param2) {
-        ProfileFragment fragment = new ProfileFragment();
-        Bundle args = new Bundle();
-        args.putString("param1", param1);
-        args.putString("param2", param2);
-        fragment.setArguments(args);
-        return fragment;
     }
 
     @Override
@@ -35,46 +22,48 @@ public class ProfileFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_profile, container, false);
 
-        // UI init
-        txtMobile = view.findViewById(R.id.txtMobile);
-        txtName = view.findViewById(R.id.textView6);
-        txtStudentId = view.findViewById(R.id.textView2);
-        txtClassSection = view.findViewById(R.id.textView8);
-
-        // 🔹 Find back arrow
-        ImageView backArrow = view.findViewById(R.id.profilearrow);
+        // ================= Back Arrow =================
+        ImageView backArrow = view.findViewById(R.id.setarrow);
         backArrow.setOnClickListener(v -> {
-            Fragment attendanceFragment = new AttendanceFragment();
-            requireActivity().getSupportFragmentManager()
-                    .beginTransaction()
-                    .replace(R.id.fragment_container, attendanceFragment)
-                    .addToBackStack(null)
-                    .commit();
-
-            BottomNavigationView bottomNav = requireActivity().findViewById(R.id.bottom_navigation);
-            bottomNav.setSelectedItemId(R.id.fragment_container);
+            requireActivity().getSupportFragmentManager().popBackStack();
         });
 
-        // 🔹 Load profile from SharedPreferences
-        loadProfileFromSession();
+        // ================= Disable Other Cards =================
+        int[] disabledCardIds = {
+                R.id.card_personal_details,
+                R.id.card_contact_details,
+                R.id.card_postal_details,
+                R.id.card_about_us,
+                R.id.card_privacy_policy,
+                R.id.card_support,
+                R.id.card_change_password,
+                R.id.card_share_app,
+                R.id.card_rate_app
+        };
+
+        for (int id : disabledCardIds) {
+            LinearLayout card = view.findViewById(id);
+            card.setOnClickListener(v -> {
+                // Optional: show a Toast like "Coming Soon"
+            });
+        }
+
+        // ================= Log Out Card =================
+        LinearLayout logoutCard = view.findViewById(R.id.card_logout);
+        logoutCard.setOnClickListener(v -> {
+            // 1️⃣ Remove saved userid to log out
+            SharedPreferences prefs = requireActivity().getSharedPreferences("MyPref", getActivity().MODE_PRIVATE);
+            prefs.edit().remove("userid").apply(); // important
+
+            // 2️⃣ Start LoginActivity and clear back stack
+            Intent intent = new Intent(requireActivity(), LoginActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
+
+            // 3️⃣ Finish current activity
+            requireActivity().finish();
+        });
 
         return view;
     }
-
-    private void loadProfileFromSession() {
-        SharedPreferences prefs = requireActivity().getSharedPreferences("MyPref", MODE_PRIVATE);
-        String mobile = prefs.getString("userid", "N/A");
-        String name = prefs.getString("username", "N/A");
-        String studentId = prefs.getString("student_id", "N/A"); // optional
-        String classSection = prefs.getString("class_section", "N/A"); // optional
-
-        txtMobile.setText("Mobile: " + mobile);
-        txtName.setText("Name: " + name);
-        txtStudentId.setText("Student ID: " + studentId);
-        txtClassSection.setText("Class/Section: " + classSection);
-    }
 }
-
-
-
-

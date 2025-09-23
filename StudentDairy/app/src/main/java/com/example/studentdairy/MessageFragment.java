@@ -10,7 +10,7 @@ import androidx.fragment.app.Fragment;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-public class AttendanceFragment extends Fragment {
+public class MessageFragment extends Fragment {
 
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
@@ -18,12 +18,12 @@ public class AttendanceFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    public AttendanceFragment() {
+    public MessageFragment() {
         // Required empty public constructor
     }
 
-    public static AttendanceFragment newInstance(String param1, String param2) {
-        AttendanceFragment fragment = new AttendanceFragment();
+    public static MessageFragment newInstance(String param1, String param2) {
+        MessageFragment fragment = new MessageFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -43,7 +43,7 @@ public class AttendanceFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_attendance, container, false);
+        View view = inflater.inflate(R.layout.fragment_message, container, false);
 
         // 🔹 Find arrow (make sure id = attarrow in fragment_attendance.xml)
         ImageView backArrow = view.findViewById(R.id.attarrow);

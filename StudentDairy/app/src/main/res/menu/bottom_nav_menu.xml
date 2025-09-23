@@ -9,21 +9,26 @@
         />
 
     <item
-        android:id="@+id/nav_attendance"
-        android:icon="@drawable/list"
-        android:title="Attendance"
+        android:id="@+id/nav_message"
+        android:icon="@drawable/message"
+        android:title="Message"
+        />
+
+    <item
+        android:id="@+id/nav_idCard"
+        android:icon="@drawable/idcard"
+        android:title="ID Card"
+        />
+
+    <item
+        android:id="@+id/nav_notification"
+        android:icon="@drawable/notification"
+        android:title="Notification"
         />
 
     <item
         android:id="@+id/nav_profile"
         android:icon="@drawable/profile"
         android:title="Profile"
-         />
-
-    <item
-        android:id="@+id/nav_settings"
-        android:icon="@drawable/settings"
-        android:title="Settings"
-         />
-
+        />
 </menu>
