@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+tools:context=".AttedanceFragment">
+
+<LinearLayout
+    android:background="@drawable/rounded_bg"
+    android:backgroundTint="#1E5AA8"
+    android:layout_width="match_parent"
+    android:layout_height="90dp"
+    android:orientation="horizontal"
+    android:paddingHorizontal="20dp"
+    android:paddingVertical="12dp"
+    android:elevation="6dp">
+
+    <!-- Left side (Image + Text together) -->
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:layout_marginTop="22dp"
+        android:orientation="horizontal"
+        android:gravity="center_vertical">
+
+        <!-- Image on Left -->
+        <ImageView
+            android:id="@+id/attarrow"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@drawable/arrowback"
+            android:layout_marginEnd="10dp"
+            app:tint="@android:color/white"/>
+
+        <!-- Text on Right -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Attendance"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+
+</LinearLayout>
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="16dp"
+        android:weightSum="3"
+        android:layout_marginTop="90dp"
+        android:gravity="center_vertical">
+
+        <!-- From Date -->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:padding="4dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="From Date"
+                android:textStyle="bold"
+                android:textSize="14sp" />
+
+            <EditText
+                android:id="@+id/editTextFromDate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="dd/mm/yyyy"
+                android:focusable="false"
+                android:clickable="true"
+                android:background="@drawable/rounded_bg"
+                android:backgroundTint="@color/white"
+                android:drawableEnd="@android:drawable/ic_menu_my_calendar"
+                android:inputType="none"
+                android:padding="8dp" />
+        </LinearLayout>
+
+        <!-- To Date -->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:padding="4dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="To Date"
+                android:textStyle="bold"
+                android:textSize="14sp" />
+
+            <EditText
+                android:id="@+id/editTextToDate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="dd/mm/yyyy"
+                android:focusable="false"
+                android:clickable="true"
+                android:background="@drawable/rounded_bg"
+                android:backgroundTint="@color/white"
+                android:drawableEnd="@android:drawable/ic_menu_my_calendar"
+                android:inputType="none"
+                android:padding="8dp" />
+        </LinearLayout>
+
+        <!-- Fetch Button -->
+        <Button
+            android:id="@+id/btnFetchData"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Fetch Data"
+            android:padding="15dp"
+            android:layout_marginTop="10dp"
+            android:gravity="center"
+            android:background="@drawable/rounded_bg"
+            />
+    </LinearLayout>
+
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:weightSum="3"
+   android:layout_marginTop="210dp"
+    android:layout_marginBottom="84dp"
+    android:gravity="center"
+    >
+
+    <ImageView
+        android:layout_width="110dp"
+        android:layout_height="55dp"
+        android:src="@drawable/nodata" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Attendance data not available"
+        />
+
+</LinearLayout>
+</FrameLayout>
