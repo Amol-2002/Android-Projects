@@ -9,7 +9,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import static android.content.Context.MODE_PRIVATE;
 
@@ -17,64 +16,25 @@ public class IdcardFragment extends Fragment {
 
     private TextView txtMobile, txtName, txtStudentId, txtClassSection;
 
-    public IdcardFragment() {
-        // Required empty public constructor
-    }
-
-    public static IdcardFragment newInstance(String param1, String param2) {
-        IdcardFragment fragment = new IdcardFragment();
-        Bundle args = new Bundle();
-        args.putString("param1", param1);
-        args.putString("param2", param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_idcard, container, false);
 
-        // UI init
-        txtMobile = view.findViewById(R.id.txtMobile);
-        txtName = view.findViewById(R.id.textView6);
-        txtStudentId = view.findViewById(R.id.textView2);
-        txtClassSection = view.findViewById(R.id.textView8);
 
-        // 🔹 Find back arrow
+        // 🔹 Handle back arrow
         ImageView backArrow = view.findViewById(R.id.profilearrow);
         backArrow.setOnClickListener(v -> {
-            Fragment attendanceFragment = new MessageFragment();
             requireActivity().getSupportFragmentManager()
                     .beginTransaction()
-                    .replace(R.id.fragment_container, attendanceFragment)
+                    .replace(R.id.fragment_container, new MessageFragment())
                     .addToBackStack(null)
                     .commit();
-
-            BottomNavigationView bottomNav = requireActivity().findViewById(R.id.bottom_navigation);
-            bottomNav.setSelectedItemId(R.id.fragment_container);
         });
 
-        // 🔹 Load profile from SharedPreferences
-        loadProfileFromSession();
+
 
         return view;
     }
 
-    private void loadProfileFromSession() {
-        SharedPreferences prefs = requireActivity().getSharedPreferences("MyPref", MODE_PRIVATE);
-        String mobile = prefs.getString("userid", "N/A");
-        String name = prefs.getString("username", "N/A");
-        String studentId = prefs.getString("student_id", "N/A"); // optional
-        String classSection = prefs.getString("class_section", "N/A"); // optional
-
-        txtMobile.setText("Mobile: " + mobile);
-        txtName.setText("Name: " + name);
-        txtStudentId.setText("Student ID: " + studentId);
-        txtClassSection.setText("Class/Section: " + classSection);
-    }
 }
-
-
-
-

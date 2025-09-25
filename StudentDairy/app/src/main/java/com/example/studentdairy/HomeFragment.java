@@ -35,6 +35,7 @@ public class HomeFragment extends Fragment {
 
       ImageView itemAttendance = view.findViewById(R.id.item_attendance);
       ImageView itemClassSchedule = view.findViewById(R.id.item_class_schedule);
+        ImageView itemOnlineClass = view.findViewById(R.id.onlineClasses_icon);
 
 
 
@@ -52,6 +53,15 @@ public class HomeFragment extends Fragment {
             requireActivity().getSupportFragmentManager()
                     .beginTransaction()
                     .replace(R.id.fragment_container, classScheduleFragment)
+                    .addToBackStack(null)
+                    .commit();
+        });
+
+        itemOnlineClass.setOnClickListener(v -> {
+            Fragment onlineClassFragment = new OnlineClassFragment();
+            requireActivity().getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.fragment_container, onlineClassFragment)
                     .addToBackStack(null)
                     .commit();
         });

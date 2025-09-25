@@ -46,5 +46,22 @@
             </LinearLayout>
 
         </LinearLayout>
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center">
+
+        <ImageView
+            android:layout_width="110dp"
+            android:layout_height="55dp"
+            android:src="@drawable/nodata" />
+
+        <TextView
+            android:layout_width="290dp"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:text="Notification will be available after Faculty/ Admain send from the system" />
+    </LinearLayout>
 
     </FrameLayout>

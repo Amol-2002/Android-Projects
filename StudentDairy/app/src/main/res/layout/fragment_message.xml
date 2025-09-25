@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".MessageFragment">
+    tools:context=".NotificationFragment">
 
     <LinearLayout
         android:background="@drawable/rounded_bg"
@@ -45,6 +45,23 @@
 
         </LinearLayout>
 
+    </LinearLayout>
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center">
+
+        <ImageView
+            android:layout_width="110dp"
+            android:layout_height="55dp"
+            android:src="@drawable/nodata" />
+
+        <TextView
+            android:layout_width="290dp"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:text="Message will be available after you send to some one" />
     </LinearLayout>
 
 </FrameLayout>

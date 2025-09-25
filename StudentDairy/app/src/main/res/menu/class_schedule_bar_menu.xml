@@ -1,38 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:tools="http://schemas.android.com/tools"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/nav_Mon"
-        android:title="Mon"
-        />
+        android:id="@+id/nav_mon"
+        android:icon="@drawable/calender"
+        android:title="Mon"/>
 
     <item
-        android:id="@+id/nav_Tue"
+        android:id="@+id/nav_tue"
+        android:icon="@drawable/calender"
 
-        android:title="Tue"
-        />
-
-    <item
-        android:id="@+id/nav_Wed"
-
-        android:title="Wed"
-        />
+        android:title="Tue"/>
 
     <item
-        android:id="@+id/nav_Thu"
+        android:id="@+id/nav_wed"
+        android:icon="@drawable/calender"
 
-        android:title="Thu"
-        />
-
-    <item
-        android:id="@+id/nav_Fri"
-        android:title="Fri"
-        />
+        android:title="Wed"/>
 
     <item
-        android:id="@+id/nav_Sat"
+        android:id="@+id/nav_thu"
+        android:icon="@drawable/calender"
 
-        android:title="Sat"
-        />
+        android:title="Thu"/>
+
+    <item
+        android:id="@+id/nav_fri"
+        android:icon="@drawable/calender"
+
+        android:title="Fri"/>
+
+    <item
+        android:id="@+id/nav_sat"
+        android:icon="@drawable/calender"
+
+        android:title="Sat"/>
 </menu>
