@@ -1,5 +1,6 @@
 package com.example.studentdairy;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -10,47 +11,35 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.tabs.TabLayout;
 
 public class ClassScheduleFragment extends Fragment {
-
+    private TabLayout tabLayout;
     public ClassScheduleFragment() {}
 
+    @SuppressLint("MissingInflatedId")
+    @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_class_schedule, container, false);
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
+                             @Nullable Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_class_schedule, container, false);
+
+//        spinnerCourse = view.findViewById(R.id.spinnerCourse);
+        tabLayout = view.findViewById(R.id.tabLayout);
+
+
+        // Add tabs
+        tabLayout.addTab(tabLayout.newTab().setText("Mon"));
+        tabLayout.addTab(tabLayout.newTab().setText("Tue"));
+        tabLayout.addTab(tabLayout.newTab().setText("Wen"));
+        tabLayout.addTab(tabLayout.newTab().setText("Thu"));
+        tabLayout.addTab(tabLayout.newTab().setText("Fri"));
+        tabLayout.addTab(tabLayout.newTab().setText("Sat"));
+
+        return view;
     }
-
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
-        BottomNavigationView bottomNav = view.findViewById(R.id.bottom_navigation);
-
-
-        bottomNav.setOnItemSelectedListener(item -> {
-            Fragment selected = null;
-
-            int id = item.getItemId();
-            if (id == R.id.nav_mon) {
-                selected = new MondayFragment();
-            } else if (id == R.id.nav_tue) {
-                selected = new MondayFragment();
-            } else if (id == R.id.nav_wed) {
-                selected = new MondayFragment();
-            } else if (id == R.id.nav_thu) {
-                selected = new MondayFragment();
-            } else if (id == R.id.nav_fri) {
-                selected = new MondayFragment();
-            } else if (id == R.id.nav_sat) {
-                selected = new MondayFragment();
-            }
-
-
-            return true;
-        });
 
     }
 
 
-}
+

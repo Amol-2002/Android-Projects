@@ -35,7 +35,17 @@ public class HomeFragment extends Fragment {
 
       ImageView itemAttendance = view.findViewById(R.id.item_attendance);
       ImageView itemClassSchedule = view.findViewById(R.id.item_class_schedule);
-        ImageView itemOnlineClass = view.findViewById(R.id.onlineClasses_icon);
+      ImageView itemOnlineClass = view.findViewById(R.id.onlineClasses_icon);
+      ImageView itemFeesPaid = view.findViewById(R.id.feespaid_icon);
+        ImageView itemRegisterSubject = view.findViewById(R.id.registersubjects_icon);
+        ImageView itemCertificateIcon = view.findViewById(R.id.Certificate_icon);
+        ImageView itemCalenderIcon = view.findViewById(R.id.Calender_icon);
+        ImageView itemItleIcon = view.findViewById(R.id.itle_icon);
+        ImageView itemRailwayPass = view.findViewById(R.id.railway_icon);
+
+
+
+
 
 
 
@@ -67,7 +77,60 @@ public class HomeFragment extends Fragment {
         });
 
 
+        itemFeesPaid.setOnClickListener(v -> {
+            Fragment feesPaidFragment = new FeesPaidFragment();
+            requireActivity().getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.fragment_container, feesPaidFragment)
+                    .addToBackStack(null)
+                    .commit();
+        });
 
+
+        itemRegisterSubject.setOnClickListener(v -> {
+            Fragment registerSubjectFragment = new RegisterSubjectFragment();
+            requireActivity().getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.fragment_container, registerSubjectFragment)
+                    .addToBackStack(null)
+                    .commit();
+        });
+
+        itemCertificateIcon.setOnClickListener(v -> {
+            Fragment certificateFragment = new CertificateFragment();
+            requireActivity().getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.fragment_container, certificateFragment)
+                    .addToBackStack(null)
+                    .commit();
+        });
+
+        itemCalenderIcon.setOnClickListener(v -> {
+            Fragment calenderFragment = new CalenderFragment();
+            requireActivity().getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.fragment_container, calenderFragment)
+                    .addToBackStack(null)
+                    .commit();
+        });
+
+        itemItleIcon.setOnClickListener(v -> {
+            Fragment itleFragment = new ItleFragment();
+            requireActivity().getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.fragment_container, itleFragment)
+                    .addToBackStack(null)
+                    .commit();
+        });
+
+        itemRailwayPass.setOnClickListener(v -> {
+            Fragment railwayPassFragment = new RailwayPassFragment();
+            requireActivity().getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.fragment_container, railwayPassFragment)
+                    .addToBackStack(null)
+                    .commit();
+        });
 
         return view;
     }

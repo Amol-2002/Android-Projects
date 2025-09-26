@@ -1,13 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".OnlineClass">
+    android:background="#1E5AA8">
 
-    <!-- Header -->
     <LinearLayout
         android:background="@drawable/rounded_bg"
         android:backgroundTint="#1E5AA8"
@@ -16,62 +14,81 @@
         android:orientation="horizontal"
         android:paddingHorizontal="20dp"
         android:paddingVertical="12dp"
-        android:elevation="6dp"
-        android:gravity="center_vertical">
+        android:elevation="6dp">
 
-        <ImageView
-            android:id="@+id/attarrow"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:src="@drawable/arrowback"
-            android:layout_marginEnd="10dp"
-            app:tint="@android:color/white"/>
+        <!-- Left side (Image + Text together) -->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:layout_marginTop="22dp"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Online Class"
-            android:textColor="@color/white"
-            android:textSize="20sp"
-            android:textStyle="bold" />
+            <!-- Image on Left -->
+            <ImageView
+                android:id="@+id/attarrow"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:src="@drawable/arrowback"
+                android:layout_marginEnd="10dp"
+                app:tint="@android:color/white"/>
+
+            <!-- Text on Right -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Online Class"
+                android:textColor="@color/white"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+
     </LinearLayout>
 
-    <!-- Tab Layout -->
+    <!-- Tabs -->
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tabLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:tabIndicatorColor="@android:color/white"
-        app:tabSelectedTextColor="@android:color/white"
-        app:tabTextColor="@android:color/darker_gray"
-        android:background="#1E5AA8"/>
+        app:tabGravity="fill"
+        app:tabMode="fixed"
+        android:layout_marginTop="10dp"
+        app:tabIndicatorColor="@color/white"
+        android:background="@drawable/rounded_bg"
+        app:tabTextColor="@android:color/white"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="10dp"
+        android:backgroundTint="#0D428A"
+        app:tabSelectedTextColor="@android:color/white"/>
 
 
-    <FrameLayout
-        android:id="@+id/tabContent"
+    <!-- Empty State -->
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1">
+        android:layout_weight="1"
+        android:gravity="center"
+        android:background="@color/white"
+        android:orientation="vertical">
 
-        <!-- Placeholder for now -->
-        <LinearLayout
-            android:orientation="vertical"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center">
+        <ImageView
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:src="@drawable/nodata" />
 
-            <ImageView
-                android:layout_width="110dp"
-                android:layout_height="55dp"
-                android:src="@drawable/nodata" />
+        <TextView
+            android:id="@+id/tvNoData"
+            android:layout_width="280dp"
+            android:layout_height="wrap_content"
+            android:text="Today's class will be available once your faculty is created in the system."
+            android:textColor="@android:color/black"
+            android:textSize="16sp"
+            android:textAlignment="center"
 
-            <TextView
-                android:layout_width="290dp"
-                android:layout_height="wrap_content"
-                android:textAlignment="center"
-                android:text="Todays' class will be avialable once your faculty is created in the system." />
-        </LinearLayout>
-
-    </FrameLayout>
+            android:layout_marginTop="12dp"/>
+    </LinearLayout>
 
 </LinearLayout>
