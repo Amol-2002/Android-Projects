@@ -93,17 +93,24 @@ public class LoginActivity extends AppCompatActivity {
                     progressBar.setVisibility(android.view.View.GONE);
                     btnLogin.setEnabled(true);
 
-                    // ✅ Treat all successful requests as valid login
-                    Toast.makeText(LoginActivity.this, "Login Successful", Toast.LENGTH_SHORT).show();
+                    // Remove all non-letter characters and convert to lowercase
+                    String result = response.replaceAll("[^a-zA-Z]", "").toLowerCase();
 
-                    // Save user in SharedPreferences (optional)
-                    SharedPreferences.Editor editor = sharedPreferences.edit();
-                    editor.putString("userid", userid);
-                    editor.apply();
+                    if (result.equals("success")) {
+                        // Correct login
+                        Toast.makeText(LoginActivity.this, "Login Successful", Toast.LENGTH_SHORT).show();
 
-                    // Navigate to MainActivity
-                    startActivity(new Intent(LoginActivity.this, MainActivity.class));
-                    finish();
+                        SharedPreferences.Editor editor = sharedPreferences.edit();
+                        editor.putString("userid", userid);
+                        editor.apply();
+
+                        startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                        finish();
+
+                    } else {
+                        // Any other response → login failed
+                        Toast.makeText(LoginActivity.this, "Invalid Username or Password", Toast.LENGTH_SHORT).show();
+                    }
 
                 },
                 error -> {
