@@ -1,6 +1,7 @@
 package com.example.studentdairy;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.media.Image;
 import android.os.Bundle;
 import androidx.fragment.app.Fragment;
@@ -10,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 public class HomeFragment extends Fragment {
 
@@ -30,6 +32,12 @@ public class HomeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
+        TextView parentNameTxt = view.findViewById(R.id.etParentName);
+
+        SharedPreferences prefs = requireContext().getSharedPreferences("ParentProfile", getActivity().MODE_PRIVATE);
+        String parentName = prefs.getString("parent_fullname", "Parent");
+
+        parentNameTxt.setText(parentName);
 
         // Example cards & icons
 
@@ -50,48 +58,48 @@ public class HomeFragment extends Fragment {
 
 
         itemAttendance.setOnClickListener(v -> {
-            Fragment attendanceFragment = new AttendanceFragment();
+            Fragment parentProfileFragment = new ParentProfileFragment();
             requireActivity().getSupportFragmentManager()
                     .beginTransaction()
-                    .replace(R.id.fragment_container, attendanceFragment)
+                    .replace(R.id.fragment_container, parentProfileFragment)
                     .addToBackStack(null)
                     .commit();
         });
 
         itemClassSchedule.setOnClickListener(v -> {
-            Fragment classScheduleFragment = new ClassScheduleFragment();
+            Fragment studentProfileFragment  = new StudentProfileFragment();
             requireActivity().getSupportFragmentManager()
                     .beginTransaction()
-                    .replace(R.id.fragment_container, classScheduleFragment)
+                    .replace(R.id.fragment_container, studentProfileFragment)
                     .addToBackStack(null)
                     .commit();
         });
 
         itemOnlineClass.setOnClickListener(v -> {
-            Fragment onlineClassFragment = new OnlineClassFragment();
+            Fragment holidayFragment = new HolidayFragment();
             requireActivity().getSupportFragmentManager()
                     .beginTransaction()
-                    .replace(R.id.fragment_container, onlineClassFragment)
+                    .replace(R.id.fragment_container, holidayFragment)
                     .addToBackStack(null)
                     .commit();
         });
 
 
         itemFeesPaid.setOnClickListener(v -> {
-            Fragment feesPaidFragment = new FeesPaidFragment();
+            Fragment timeTableFragment  = new TimeTableFragment();
             requireActivity().getSupportFragmentManager()
                     .beginTransaction()
-                    .replace(R.id.fragment_container, feesPaidFragment)
+                    .replace(R.id.fragment_container, timeTableFragment)
                     .addToBackStack(null)
                     .commit();
         });
 
 
         itemRegisterSubject.setOnClickListener(v -> {
-            Fragment registerSubjectFragment = new RegisterSubjectFragment();
+            Fragment homeWorkFragment  = new HomeWorkFragment();
             requireActivity().getSupportFragmentManager()
                     .beginTransaction()
-                    .replace(R.id.fragment_container, registerSubjectFragment)
+                    .replace(R.id.fragment_container, homeWorkFragment)
                     .addToBackStack(null)
                     .commit();
         });
@@ -115,19 +123,19 @@ public class HomeFragment extends Fragment {
         });
 
         itemItleIcon.setOnClickListener(v -> {
-            Fragment itleFragment = new ItleFragment();
+            Fragment updatePasswordFragment = new UpdatePasswordFragment();
             requireActivity().getSupportFragmentManager()
                     .beginTransaction()
-                    .replace(R.id.fragment_container, itleFragment)
+                    .replace(R.id.fragment_container, updatePasswordFragment)
                     .addToBackStack(null)
                     .commit();
         });
 
         itemRailwayPass.setOnClickListener(v -> {
-            Fragment railwayPassFragment = new RailwayPassFragment();
+            Fragment attendanceFragment = new AttendanceFragment();
             requireActivity().getSupportFragmentManager()
                     .beginTransaction()
-                    .replace(R.id.fragment_container, railwayPassFragment)
+                    .replace(R.id.fragment_container, attendanceFragment)
                     .addToBackStack(null)
                     .commit();
         });

@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".NotificationFragment">
+    tools:context=".AttendanceFragment">
 
     <LinearLayout
         android:background="@drawable/rounded_bg"
@@ -38,7 +38,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Railway Concession Pass"
+                android:text="Time Table"
                 android:textColor="@color/white"
                 android:textSize="20sp"
                 android:textStyle="bold" />
@@ -46,41 +46,6 @@
         </LinearLayout>
 
     </LinearLayout>
-    <LinearLayout
-        android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="90dp"
-        android:gravity="center">
 
-        <ImageView
-
-            android:layout_width="110dp"
-            android:layout_height="55dp"
-            android:src="@drawable/nodata" />
-
-        <TextView
-
-            android:layout_width="290dp"
-            android:layout_height="wrap_content"
-            android:text="Data not available!"
-            android:textAlignment="center"
-           />
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:background="@drawable/rounded_bg"
-            android:layout_marginStart="10dp"
-            android:layout_marginEnd="10dp"
-            android:layout_marginTop="290dp"
-            android:backgroundTint="#1E5AA8"
-            android:text="New Application"
-            android:textColor="@color/white"
-            android:textAlignment="center"
-            android:paddingTop="15dp"/>
-
-
-
-    </LinearLayout>
 
 </FrameLayout>

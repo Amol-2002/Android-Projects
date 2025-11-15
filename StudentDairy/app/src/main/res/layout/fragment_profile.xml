@@ -26,7 +26,7 @@
             android:layout_marginTop="22dp">
 
             <ImageView
-                android:id="@+id/setarrow"
+                android:id="@+id/attarrow"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:src="@drawable/arrowback"
@@ -58,6 +58,7 @@
             android:padding="16dp">
 
             <!-- Card Template -->
+<!--  Parent Profile-->
             <LinearLayout
                 android:id="@+id/card_personal_details"
                 android:layout_width="match_parent"
@@ -82,7 +83,45 @@
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="Personal Details"
+                    android:text="Parent Profile"
+                    android:textColor="#000"
+                    android:textSize="18sp"
+                    android:layout_marginStart="16dp"
+                    android:layout_weight="1"/>
+
+                <ImageView
+                    android:id="@+id/arrow_Parent_Profile"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/ic_arrow_right"
+                    android:contentDescription="Go to Personal Details"/>
+            </LinearLayout>
+<!--Student Profile-->
+            <LinearLayout
+                android:id="@+id/card_Student_profile"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:orientation="horizontal"
+                android:background="@drawable/rounded_bg"
+                android:paddingHorizontal="16dp"
+                android:gravity="center_vertical"
+                android:layout_marginBottom="12dp"
+                android:elevation="4dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?attr/selectableItemBackground">
+
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/profile"
+                    android:contentDescription="Personal Details Icon"
+                    app:tint="#1E5AA8" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="Student Profile"
                     android:textColor="#000"
                     android:textSize="18sp"
                     android:layout_marginStart="16dp"
@@ -95,10 +134,9 @@
                     android:src="@drawable/ic_arrow_right"
                     android:contentDescription="Go to Personal Details"/>
             </LinearLayout>
-
             <!-- Contact Details -->
             <LinearLayout
-                android:id="@+id/card_contact_details"
+                android:id="@+id/card_Timetable"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
                 android:orientation="horizontal"
@@ -121,11 +159,11 @@
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="Contact Details"
-                    android:textColor="#000"
-                    android:textSize="18sp"
                     android:layout_marginStart="16dp"
-                    android:layout_weight="1"/>
+                    android:layout_weight="1"
+                    android:text="Time Table"
+                    android:textColor="#000"
+                    android:textSize="18sp" />
 
                 <ImageView
                     android:id="@+id/arrow_contact_details"
@@ -137,7 +175,7 @@
 
             <!-- Postal Details -->
             <LinearLayout
-                android:id="@+id/card_postal_details"
+                android:id="@+id/card_holiday"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
                 android:orientation="horizontal"
@@ -160,7 +198,7 @@
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="Postal Details"
+                    android:text="Holiday"
                     android:textColor="#000"
                     android:textSize="18sp"
                     android:layout_marginStart="16dp"

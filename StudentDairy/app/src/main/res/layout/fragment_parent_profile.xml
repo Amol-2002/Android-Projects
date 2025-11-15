@@ -1,0 +1,271 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".ParentProfileFragment">
+
+    <LinearLayout
+        android:background="@drawable/rounded_bg"
+        android:backgroundTint="#1E5AA8"
+        android:layout_width="match_parent"
+        android:layout_height="90dp"
+        android:orientation="horizontal"
+        android:paddingHorizontal="20dp"
+        android:paddingVertical="12dp"
+        android:elevation="6dp">
+
+        <!-- Left side (Image + Text together) -->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:layout_marginTop="22dp"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+
+            <!-- Image on Left -->
+            <ImageView
+                android:id="@+id/attarrow"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:src="@drawable/arrowback"
+                android:layout_marginEnd="10dp"
+                app:tint="@android:color/white"/>
+
+            <!-- Text on Right -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Parent Profile"
+                android:textColor="@color/white"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+
+    </LinearLayout><!-- Card Container -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/background_card"
+        android:elevation="4dp"
+        android:orientation="vertical"
+        android:layout_marginTop="100dp"
+        android:padding="16dp">
+
+        <!-- Header -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingBottom="8dp"
+            android:text="Parent Profile"
+            android:textColor="#1E3A8A"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginBottom="12dp"
+            android:background="#E2E8F0" />
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:background="@drawable/rounded_bg"
+            android:elevation="4dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:padding="6dp">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/etParentName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Name"
+                    android:textColor="#222222"
+                    android:textSize="22sp"
+                    android:textStyle="bold" />
+
+
+            </LinearLayout>
+
+            <FrameLayout
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_gravity="center_vertical"
+                android:background="@drawable/profile_circle"
+                android:elevation="6dp"
+                android:padding="5dp">
+
+                <ImageView
+                    android:id="@+id/imgProfile"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/circle_mask"
+                    android:clipToOutline="true"
+                    android:contentDescription="User profile picture"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/ic_launcher_foreground" />
+
+                <ImageButton
+                    android:id="@+id/btnChangeProfile"
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
+                    android:layout_gravity="bottom|end"
+                    android:layout_margin="4dp"
+                    android:background="@drawable/aboutus"
+                    android:contentDescription="Change profile picture"
+                    android:padding="6dp"
+                    android:src="@drawable/student" />
+            </FrameLayout>
+        </LinearLayout>
+
+        <!-- Details Grid -->
+        <GridLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:alignmentMode="alignMargins"
+            android:columnCount="2"
+            android:orientation="horizontal"
+            android:rowCount="8"
+            android:useDefaultMargins="true">
+
+
+            <TextView
+                style="@style/LabelText"
+                android:text="First Name" />
+
+            <TextView
+                android:id="@+id/etFullName"
+                style="@style/ValueText"
+                android:text="-" />
+
+            <!-- Row 3 -->
+            <TextView
+                style="@style/LabelText"
+                android:text="Middle Name" />
+
+            <TextView
+                android:id="@+id/etMiddleName"
+
+                style="@style/ValueText"
+                android:text="-" />
+
+            <!-- Row 4 -->
+            <TextView
+                style="@style/LabelText"
+                android:text="Last Name" />
+
+            <TextView
+                android:id="@+id/etLastName"
+
+                style="@style/ValueText"
+                android:text="-" />
+
+            <!-- Row 5 -->
+            <TextView
+                style="@style/LabelText"
+                android:text="Occupation" />
+
+            <TextView
+                android:id="@+id/etOccupation"
+
+                style="@style/ValueText"
+                android:text="-" />
+
+            <!-- Row 6 -->
+            <TextView
+                style="@style/LabelText"
+                android:text="Company Name" />
+
+            <TextView
+                android:id="@+id/etCompanyName"
+
+                style="@style/ValueText"
+                android:text="-" />
+
+            <!-- Row 7 -->
+            <TextView
+                style="@style/LabelText"
+                android:text="Mobile Number" />
+
+            <TextView
+                android:id="@+id/etMobile"
+                style="@style/ValueText"
+                android:text="-" />
+
+            <!-- Row 8 -->
+            <TextView
+                style="@style/LabelText"
+                android:text="Alernate Mobile" />
+
+            <TextView
+                android:id="@+id/etAlternateMobile"
+                style="@style/ValueText"
+                android:text="-" />
+
+            <!-- Row 9 -->
+            <TextView
+                style="@style/LabelText"
+                android:text="Permanent Address" />
+
+            <TextView
+                android:id="@+id/etPermanentAddress"
+
+                style="@style/ValueText"
+                android:text="-" />
+
+            <!-- Row 10 -->
+            <TextView
+                style="@style/LabelText"
+                android:text="Present Address" />
+
+            <TextView
+                android:id="@+id/etPresentAddress"
+
+                style="@style/ValueText"
+                android:text="-" />
+
+            <!-- Row 11 -->
+            <TextView
+                style="@style/LabelText"
+                android:text="City" />
+
+            <TextView
+                android:id="@+id/etCity"
+
+                style="@style/ValueText"
+                android:text="-" />
+
+            <!-- Row 12 -->
+            <TextView
+                style="@style/LabelText"
+                android:text="State" />
+
+            <TextView
+                android:id="@+id/etState"
+
+                style="@style/ValueText"
+                android:text="-" />
+
+
+
+        </GridLayout>
+
+    </LinearLayout>
+
+
+
+
+
+</FrameLayout>

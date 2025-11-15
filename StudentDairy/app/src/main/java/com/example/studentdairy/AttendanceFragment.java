@@ -1,86 +1,101 @@
 package com.example.studentdairy;
 
-import android.app.DatePickerDialog;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
-import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
-
-import java.util.Calendar;
-
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+import org.json.JSONArray;
+import org.json.JSONObject;
+import java.text.SimpleDateFormat;
+import java.util.*;
 public class AttendanceFragment extends Fragment {
 
-    EditText editTextFromDate, editTextToDate;
-    Button btnFetchData;
+    private static final String ATTEND_URL = "https://trifrnd.co.in/school/api/data.php?apicall=attend";
+    RecyclerView recyclerAttendance;
+    List<AttendanceModel> attendanceList = new ArrayList<>();
 
-    public AttendanceFragment() {
-        // Required empty public constructor
-    }
-
-    public static AttendanceFragment newInstance(String param1, String param2) {
-        AttendanceFragment fragment = new AttendanceFragment();
-        Bundle args = new Bundle();
-        args.putString("param1", param1);
-        args.putString("param2", param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
+    @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate layout
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
+                             @Nullable Bundle savedInstanceState) {
+
         View view = inflater.inflate(R.layout.fragment_attendance, container, false);
 
-        // Initialize views
-        editTextFromDate = view.findViewById(R.id.editTextFromDate);
-        editTextToDate = view.findViewById(R.id.editTextToDate);
-        btnFetchData = view.findViewById(R.id.btnFetchData);
+        // Find the ImageView
+        ImageView attarrow = view.findViewById(R.id.attarrow);
 
-        // Show calendar when clicking From Date
-        editTextFromDate.setOnClickListener(v -> showDatePicker(editTextFromDate));
-
-        // Show calendar when clicking To Date
-        editTextToDate.setOnClickListener(v -> showDatePicker(editTextToDate));
-
-        // Button click
-        btnFetchData.setOnClickListener(v -> {
-            String fromDate = editTextFromDate.getText().toString();
-            String toDate = editTextToDate.getText().toString();
-
-            if (fromDate.isEmpty() || toDate.isEmpty()) {
-                Toast.makeText(getContext(), "Please select both dates", Toast.LENGTH_SHORT).show();
-            } else {
-                Toast.makeText(getContext(),
-                        "Fetching data from " + fromDate + " to " + toDate,
-                        Toast.LENGTH_LONG).show();
-                // TODO: Call your API here
-            }
+        // Click → Intent to MainActivity
+        attarrow.setOnClickListener(v -> {
+            Intent intent = new Intent(getActivity(), MainActivity.class);
+            startActivity(intent);
         });
+
+        recyclerAttendance = view.findViewById(R.id.recyclerAttendance);
+        recyclerAttendance.setLayoutManager(new LinearLayoutManager(getContext()));
+
+        SharedPreferences prefs = requireActivity().getSharedPreferences("StudentProfile", getContext().MODE_PRIVATE);
+        String classId = prefs.getString("class_id", "1");
+        String sectionId = prefs.getString("section_id", "A");
+        String studentId = prefs.getString("student_id", "101");
+
+        loadAttendance(classId, sectionId, studentId);
 
         return view;
     }
 
-    // Function to show calendar
-    private void showDatePicker(EditText target) {
-        final Calendar calendar = Calendar.getInstance();
-        int year = calendar.get(Calendar.YEAR);
-        int month = calendar.get(Calendar.MONTH);
-        int day = calendar.get(Calendar.DAY_OF_MONTH);
 
-        DatePickerDialog picker = new DatePickerDialog(
-                getContext(),
-                (view, y, m, d) -> {
-                    String date = String.format("%02d/%02d/%04d", d, (m + 1), y);
-                    target.setText(date);
+    private void loadAttendance(String classId, String sectionId, String studentId) {
+        StringRequest request = new StringRequest(Request.Method.POST, ATTEND_URL,
+                response -> {
+                    try {
+                        JSONArray array = new JSONArray(response);
+                        attendanceList.clear();
+
+                        for (int i = 0; i < array.length(); i++) {
+                            JSONObject obj = array.getJSONObject(i);
+                            String dateRaw = obj.getString("a_date");
+                            String status = obj.getString("status");
+
+                            // Format date to readable
+                            SimpleDateFormat oldFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
+                            SimpleDateFormat newFormat = new SimpleDateFormat("MMM dd, yyyy", Locale.US);
+                            String dateFormatted = newFormat.format(oldFormat.parse(dateRaw));
+
+                            attendanceList.add(new AttendanceModel(dateFormatted, status));
+                        }
+
+                        recyclerAttendance.setAdapter(new AttendanceAdapter(attendanceList));
+
+                    } catch (Exception e) {
+                        Toast.makeText(getContext(), "Error parsing data", Toast.LENGTH_SHORT).show();
+                    }
                 },
-                year, month, day
-        );
-        picker.show();
+                error -> Toast.makeText(getContext(), "Server Error: " + error.getMessage(), Toast.LENGTH_SHORT).show()
+        ) {
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> map = new HashMap<>();
+                map.put("class_id", classId);
+                map.put("section_id", sectionId);
+                map.put("student_id", studentId);
+                return map;
+            }
+        };
+
+        RequestQueue queue = Volley.newRequestQueue(requireContext());
+        queue.add(request);
     }
 }

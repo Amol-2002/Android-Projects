@@ -42,6 +42,7 @@
                 android:paddingTop="8dp" />
 
             <TextView
+                android:id="@+id/etParentName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="AMOL BAPU BAGUL"
@@ -58,9 +59,132 @@
             android:id="@+id/logo"
             android:layout_width="70dp"
             android:layout_height="70dp"
-            android:src="@drawable/cloud_"
-            android:layout_gravity="center_vertical"
-            android:background="@drawable/rounded_bg" />
+            android:src="@drawable/tf1"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            android:layout_gravity="center_vertical"/>
+<!--            android:background="@drawable/rounded_bg" />-->
     </LinearLayout>
 
 
@@ -327,7 +451,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Attendance"
+                        android:text="Parent Profile"
                         android:textSize="12sp"
                         android:textColor="#000000"
                         android:gravity="center"/>
@@ -353,7 +477,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Class Schedule"
+                        android:text="Student Profile"
                         android:textSize="12sp"
                         android:textColor="#000000"
                         android:gravity="center"/>
@@ -379,7 +503,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Online Classes"
+                        android:text="Holiday Holiday"
                         android:textSize="12sp"
                         android:textColor="#000000"
                         android:gravity="center"/>
@@ -405,7 +529,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Fees Paid"
+                        android:text="Time Table"
                         android:textSize="12sp"
                         android:textColor="#000000"
                         android:gravity="center"/>
@@ -431,7 +555,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Register Subject"
+                        android:text="Home Work"
                         android:textSize="12sp"
                         android:textColor="#000000"
                         android:gravity="center"/>
@@ -483,7 +607,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Railway Concession"
+                        android:text="Attendance"
                         android:textSize="12sp"
                         android:textColor="#000000"
                         android:gravity="center"/>
@@ -535,123 +659,123 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="ITLE"
+                        android:text="Update Password"
                         android:textSize="12sp"
                         android:textColor="#000000"
                         android:gravity="center"/>
                 </LinearLayout>
 
             </GridLayout>
-            <LinearLayout
+<!--            <LinearLayout-->
 
-                android:layout_width="match_parent"
-                android:layout_height="100dp"
-                android:orientation="vertical"
-                android:background="@drawable/rounded_bg"
-                android:gravity="center_vertical"
-                android:layout_marginTop="10dp"
-                android:elevation="4dp"
-                android:clickable="true"
-                android:focusable="true"
-                android:foreground="?attr/selectableItemBackground">
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="100dp"-->
+<!--                android:orientation="vertical"-->
+<!--                android:background="@drawable/rounded_bg"-->
+<!--                android:gravity="center_vertical"-->
+<!--                android:layout_marginTop="10dp"-->
+<!--                android:elevation="4dp"-->
+<!--                android:clickable="true"-->
+<!--                android:focusable="true"-->
+<!--                android:foreground="?attr/selectableItemBackground">-->
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Today's Schedule"
-                    android:layout_marginTop="10dp"
-                    android:layout_gravity="center"
-                    android:textColor="#000"
-                    android:textStyle="bold"
-                    android:textSize="20sp"
-                    />
+<!--                <TextView-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:text="Today's Schedule"-->
+<!--                    android:layout_marginTop="10dp"-->
+<!--                    android:layout_gravity="center"-->
+<!--                    android:textColor="#000"-->
+<!--                    android:textStyle="bold"-->
+<!--                    android:textSize="20sp"-->
+<!--                    />-->
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="30dp"
-                    android:text="Today's Schedle not available!"
-                    android:layout_gravity="center"
-                    android:textSize="16sp"
-                    android:gravity="center"
-                    android:layout_margin="10dp"
-                    android:background="@drawable/rounded_bg"
-                    android:backgroundTint="#E6E1E1"
-                    android:textColor="#444" />
-            </LinearLayout>
+<!--                <TextView-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="30dp"-->
+<!--                    android:text="Today's Schedle not available!"-->
+<!--                    android:layout_gravity="center"-->
+<!--                    android:textSize="16sp"-->
+<!--                    android:gravity="center"-->
+<!--                    android:layout_margin="10dp"-->
+<!--                    android:background="@drawable/rounded_bg"-->
+<!--                    android:backgroundTint="#E6E1E1"-->
+<!--                    android:textColor="#444" />-->
+<!--            </LinearLayout>-->
 
-            <LinearLayout
+<!--            <LinearLayout-->
 
-                android:layout_width="match_parent"
-                android:layout_height="100dp"
-                android:orientation="vertical"
-                android:background="@drawable/rounded_bg"
-                android:gravity="center_vertical"
-                android:layout_marginTop="10dp"
-                android:elevation="4dp"
-                android:clickable="true"
-                android:focusable="true"
-                android:foreground="?attr/selectableItemBackground">
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="100dp"-->
+<!--                android:orientation="vertical"-->
+<!--                android:background="@drawable/rounded_bg"-->
+<!--                android:gravity="center_vertical"-->
+<!--                android:layout_marginTop="10dp"-->
+<!--                android:elevation="4dp"-->
+<!--                android:clickable="true"-->
+<!--                android:focusable="true"-->
+<!--                android:foreground="?attr/selectableItemBackground">-->
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Today's Assignment"
-                    android:layout_marginTop="10dp"
-                    android:layout_gravity="center"
-                    android:textColor="#000"
-                    android:textStyle="bold"
-                    android:textSize="20sp"
-                    />
+<!--                <TextView-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:text="Today's Assignment"-->
+<!--                    android:layout_marginTop="10dp"-->
+<!--                    android:layout_gravity="center"-->
+<!--                    android:textColor="#000"-->
+<!--                    android:textStyle="bold"-->
+<!--                    android:textSize="20sp"-->
+<!--                    />-->
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="30dp"
-                    android:text="Today's Assignment not available!"
-                    android:layout_gravity="center"
-                    android:textSize="16sp"
-                    android:gravity="center"
-                    android:layout_margin="10dp"
-                    android:background="@drawable/rounded_bg"
-                    android:backgroundTint="#E6E1E1"
-                    android:textColor="#444" />
-            </LinearLayout>
+<!--                <TextView-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="30dp"-->
+<!--                    android:text="Today's Assignment not available!"-->
+<!--                    android:layout_gravity="center"-->
+<!--                    android:textSize="16sp"-->
+<!--                    android:gravity="center"-->
+<!--                    android:layout_margin="10dp"-->
+<!--                    android:background="@drawable/rounded_bg"-->
+<!--                    android:backgroundTint="#E6E1E1"-->
+<!--                    android:textColor="#444" />-->
+<!--            </LinearLayout>-->
 
-            <LinearLayout
+<!--            <LinearLayout-->
 
-                android:layout_width="match_parent"
-                android:layout_height="100dp"
-                android:orientation="vertical"
-                android:background="@drawable/rounded_bg"
-                android:gravity="center_vertical"
-                android:layout_marginTop="10dp"
-                android:elevation="4dp"
-                android:clickable="true"
-                android:focusable="true"
-                android:foreground="?attr/selectableItemBackground">
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="100dp"-->
+<!--                android:orientation="vertical"-->
+<!--                android:background="@drawable/rounded_bg"-->
+<!--                android:gravity="center_vertical"-->
+<!--                android:layout_marginTop="10dp"-->
+<!--                android:elevation="4dp"-->
+<!--                android:clickable="true"-->
+<!--                android:focusable="true"-->
+<!--                android:foreground="?attr/selectableItemBackground">-->
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Semester Wise Attendance  4"
-                    android:layout_marginTop="10dp"
-                    android:layout_gravity="center"
-                    android:textColor="#000"
-                    android:textStyle="bold"
-                    android:textSize="20sp"
-                    />
+<!--                <TextView-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:text="Semester Wise Attendance  4"-->
+<!--                    android:layout_marginTop="10dp"-->
+<!--                    android:layout_gravity="center"-->
+<!--                    android:textColor="#000"-->
+<!--                    android:textStyle="bold"-->
+<!--                    android:textSize="20sp"-->
+<!--                    />-->
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="30dp"
-                    android:text="Semester Wise Attendance not available!"
-                    android:layout_gravity="center"
-                    android:textSize="16sp"
-                    android:gravity="center"
-                    android:layout_margin="10dp"
-                    android:background="@drawable/rounded_bg"
-                    android:backgroundTint="#E6E1E1"
-                    android:textColor="#444" />
-            </LinearLayout>
+<!--                <TextView-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="30dp"-->
+<!--                    android:text="Semester Wise Attendance not available!"-->
+<!--                    android:layout_gravity="center"-->
+<!--                    android:textSize="16sp"-->
+<!--                    android:gravity="center"-->
+<!--                    android:layout_margin="10dp"-->
+<!--                    android:background="@drawable/rounded_bg"-->
+<!--                    android:backgroundTint="#E6E1E1"-->
+<!--                    android:textColor="#444" />-->
+<!--            </LinearLayout>-->
             </LinearLayout>
 
 </ScrollView>

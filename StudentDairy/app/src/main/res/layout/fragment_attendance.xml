@@ -4,7 +4,7 @@ xmlns:tools="http://schemas.android.com/tools"
 android:layout_width="match_parent"
 android:layout_height="match_parent"
 xmlns:app="http://schemas.android.com/apk/res-auto"
-tools:context=".AttedanceFragment">
+tools:context=".AttendanceFragment">
 
 <LinearLayout
     android:background="@drawable/rounded_bg"
@@ -46,107 +46,39 @@ tools:context=".AttedanceFragment">
     </LinearLayout>
 
 </LinearLayout>
-
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <!-- Card Container -->
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:padding="16dp"
-        android:weightSum="3"
-        android:layout_marginTop="90dp"
-        android:gravity="center_vertical">
+        android:background="@drawable/background_card"
+        android:elevation="4dp"
+        android:orientation="vertical"
+        android:layout_marginTop="100dp"
+        android:padding="16dp">
 
-        <!-- From Date -->
-        <LinearLayout
-            android:layout_width="0dp"
+        <!-- Header -->
+        <TextView
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:orientation="vertical"
-            android:padding="4dp">
+            android:paddingBottom="8dp"
+            android:text="Attendance"
+            android:textColor="#1E3A8A"
+            android:textSize="18sp"
+            android:textStyle="bold" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="From Date"
-                android:textStyle="bold"
-                android:textSize="14sp" />
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginBottom="12dp"
+            android:background="#E2E8F0" />
 
-            <EditText
-                android:id="@+id/editTextFromDate"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="dd/mm/yyyy"
-                android:focusable="false"
-                android:clickable="true"
-                android:background="@drawable/rounded_bg"
-                android:backgroundTint="@color/white"
-                android:drawableEnd="@android:drawable/ic_menu_my_calendar"
-                android:inputType="none"
-                android:padding="8dp" />
-        </LinearLayout>
-
-        <!-- To Date -->
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:orientation="vertical"
-            android:padding="4dp">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="To Date"
-                android:textStyle="bold"
-                android:textSize="14sp" />
-
-            <EditText
-                android:id="@+id/editTextToDate"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="dd/mm/yyyy"
-                android:focusable="false"
-                android:clickable="true"
-                android:background="@drawable/rounded_bg"
-                android:backgroundTint="@color/white"
-                android:drawableEnd="@android:drawable/ic_menu_my_calendar"
-                android:inputType="none"
-                android:padding="8dp" />
-        </LinearLayout>
-
-        <!-- Fetch Button -->
-        <Button
-            android:id="@+id/btnFetchData"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Fetch Data"
-            android:padding="15dp"
-            android:layout_marginTop="10dp"
-            android:gravity="center"
-            android:background="@drawable/rounded_bg"
-            />
+        <!-- RECYCLER -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerAttendance"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="12dp"
+            android:clipToPadding="false"
+            android:scrollbars="vertical" />
     </LinearLayout>
-
-<LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:weightSum="3"
-   android:layout_marginTop="210dp"
-    android:layout_marginBottom="84dp"
-    android:gravity="center"
-    >
-
-    <ImageView
-        android:layout_width="110dp"
-        android:layout_height="55dp"
-        android:src="@drawable/nodata" />
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Attendance data not available"
-        />
-
-</LinearLayout>
 </FrameLayout>

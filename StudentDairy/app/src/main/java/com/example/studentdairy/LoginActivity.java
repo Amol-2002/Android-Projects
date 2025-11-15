@@ -5,8 +5,6 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ProgressBar;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -15,6 +13,7 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.studentdairy.MainActivity;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -23,30 +22,37 @@ public class LoginActivity extends AppCompatActivity {
 
     EditText etUserId, etPassword;
     Button btnLogin;
-    ProgressBar progressBar;
-    TextView tvSignup;
 
-    SharedPreferences sharedPreferences;
+    SharedPreferences sharedPreferences, studentPrefs, parentPrefs ,timePrefs;
 
-    private static final String LOGIN_URL = "https://trifrnd.co.in/school/api/data.php?apicall=login";
+    private static final String LOGIN_URL = "https://testing.trifrnd.net.in/ishwar/school/api/user_login.php";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        sharedPreferences = getSharedPreferences("MyPref", MODE_PRIVATE);
-        if (isUserLoggedIn()) {
-            startActivity(new Intent(LoginActivity.this, MainActivity.class));
-            finish();
-            return;
-        }
+
+
+
+
 
         etUserId = findViewById(R.id.etUserId);
         etPassword = findViewById(R.id.etPassword);
         btnLogin = findViewById(R.id.btnLogin);
-        progressBar = findViewById(R.id.progressBar);
-        tvSignup = findViewById(R.id.tvSignup);
+
+        // SharedPreferences
+        studentPrefs = getSharedPreferences("StudentProfile", MODE_PRIVATE);
+        parentPrefs = getSharedPreferences("ParentProfile", MODE_PRIVATE);
+        timePrefs = getSharedPreferences("Homework", MODE_PRIVATE);
+
+
+        // Skip login if already logged in
+        if (studentPrefs.getBoolean("isLoggedIn", false)) {
+            startActivity(new Intent(LoginActivity.this, MainActivity.class));
+            finish();
+            return;
+        }
 
         btnLogin.setOnClickListener(v -> {
             String userid = etUserId.getText().toString().trim();
@@ -56,16 +62,6 @@ public class LoginActivity extends AppCompatActivity {
                 loginUser(userid, password);
             }
         });
-
-        tvSignup.setOnClickListener(v -> {
-            startActivity(new Intent(LoginActivity.this, RegisterActivity.class));
-            finish();
-        });
-    }
-
-    private boolean isUserLoggedIn() {
-        String userId = sharedPreferences.getString("userid", null);
-        return userId != null && !userId.isEmpty();
     }
 
     private boolean validateInput(String userid, String password) {
@@ -85,39 +81,48 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void loginUser(String userid, String password) {
-        progressBar.setVisibility(android.view.View.VISIBLE);
         btnLogin.setEnabled(false);
 
         StringRequest request = new StringRequest(Request.Method.POST, LOGIN_URL,
                 response -> {
-                    progressBar.setVisibility(android.view.View.GONE);
                     btnLogin.setEnabled(true);
 
-                    // Remove all non-letter characters and convert to lowercase
                     String result = response.replaceAll("[^a-zA-Z]", "").toLowerCase();
 
                     if (result.equals("success")) {
-                        // Correct login
                         Toast.makeText(LoginActivity.this, "Login Successful", Toast.LENGTH_SHORT).show();
 
-                        SharedPreferences.Editor editor = sharedPreferences.edit();
-                        editor.putString("userid", userid);
-                        editor.apply();
+                        // Save Student info
+                        SharedPreferences.Editor studentEditor = studentPrefs.edit();
+                        studentEditor.putString("userid", userid);
+                        studentEditor.putBoolean("isLoggedIn", true);
+                        studentEditor.apply();
 
+                        // Save Parent mobile (same as userid)
+                        SharedPreferences.Editor parentEditor = parentPrefs.edit();
+                        parentEditor.putString("mobile", userid);
+                        parentEditor.apply();
+
+                        // Save time table mobile (same as userid)
+                        SharedPreferences.Editor timeEditor = timePrefs.edit();
+                        timeEditor.putString("mobile", userid);
+                        timeEditor.apply();
+
+
+                        // Go to MainActivity
                         startActivity(new Intent(LoginActivity.this, MainActivity.class));
                         finish();
 
                     } else {
-                        // Any other response → login failed
                         Toast.makeText(LoginActivity.this, "Invalid Username or Password", Toast.LENGTH_SHORT).show();
                     }
 
                 },
                 error -> {
-                    progressBar.setVisibility(android.view.View.GONE);
                     btnLogin.setEnabled(true);
-                    Toast.makeText(LoginActivity.this, "Network Error", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(LoginActivity.this, "Network Error: " + error.getMessage(), Toast.LENGTH_SHORT).show();
                 }) {
+
             @Override
             protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<>();

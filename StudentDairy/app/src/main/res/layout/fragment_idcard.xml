@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".AttedanceFragment">
+    tools:context=".IdcardFragment">
 
+    <!-- TOP BLUE HEADER -->
     <LinearLayout
         android:background="@drawable/rounded_bg"
         android:backgroundTint="#1E5AA8"
@@ -22,10 +23,9 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:orientation="horizontal"
-            android:layout_marginTop="22dp"
             android:gravity="center_vertical">
 
-            <!-- Image on Left -->
+            <!-- Back Arrow -->
             <ImageView
                 android:id="@+id/profilearrow"
                 android:layout_width="30dp"
@@ -34,7 +34,7 @@
                 android:layout_marginEnd="10dp"
                 app:tint="@android:color/white" />
 
-            <!-- Text on Right -->
+            <!-- Header Title -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -47,23 +47,194 @@
 
     </LinearLayout>
 
-<LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout_marginTop="90dp"
-    android:layout_marginBottom="84dp"
-    >
+    <!-- MAIN ID CARD -->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="100dp"
+        android:paddingBottom="40dp">
 
-    <TextView
-        android:layout_gravity="center"
-        android:textAlignment="center"
-        android:layout_width="wrap_content"
-        android:layout_marginEnd="20dp"
-        android:layout_marginStart="20dp"
-        android:layout_height="wrap_content"
-        android:textSize="20dp"
-        android:textStyle="bold"
-        android:textColor="#B35C5C"
-        android:text="Your are not admitted in this academic year, please contact your institute"/>
-</LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:gravity="center"
+            android:layout_height="wrap_content">
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/idCardView"
+                android:layout_width="350dp"
+                android:layout_height="wrap_content"
+                app:cardElevation="8dp"
+                app:cardUseCompatPadding="true"
+                app:cardBackgroundColor="@android:color/white"
+                app:cardCornerRadius="18dp">
+
+
+            <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <!-- TOP HEADER IMAGE SECTION -->
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="250dp"
+                        android:background="#0A2A52">
+
+                        <!-- SCHOOL NAME -->
+                        <TextView
+                            android:id="@+id/tvSchoolName"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="NAME OF SCHOOL / UNIVERSITY"
+                            android:textColor="@android:color/white"
+                            android:textStyle="bold"
+                            android:textSize="16sp"
+                            android:layout_centerHorizontal="true"
+                            android:layout_marginTop="30dp"/>
+
+                        <!-- TAGLINE -->
+                        <TextView
+                            android:id="@+id/tvTagline"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Student Id Card"
+                            android:textColor="@android:color/white"
+                            android:textSize="12sp"
+                            android:layout_below="@id/tvSchoolName"
+                            android:layout_centerHorizontal="true"
+                            android:layout_marginTop="6dp" />
+
+                        <FrameLayout
+                            android:layout_width="100dp"
+                            android:layout_height="100dp"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginStart="115dp"
+                            android:background="@drawable/profile_circle"
+                            android:elevation="6dp"
+                            android:layout_marginTop="110dp"
+
+                            android:padding="5dp">
+
+                            <ImageView
+                                android:id="@+id/imgProfile"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:background="@drawable/circle_mask"
+                                android:clipToOutline="true"
+                                android:contentDescription="User profile picture"
+                                android:scaleType="centerCrop"
+                                android:src="@drawable/ic_launcher_foreground" />
+                        </FrameLayout>
+                    </RelativeLayout>
+
+                    <!-- NAME & SUBTITLE -->
+                    <LinearLayout
+                        android:orientation="vertical"
+                        android:padding="20dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_horizontal">
+
+                        <TextView
+                            android:id="@+id/tvName"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Student Name"
+                            android:textColor="#D9A441"
+                            android:textSize="20sp"
+                            android:textStyle="bold" />
+
+
+
+                    </LinearLayout>
+
+                <GridLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:alignmentMode="alignMargins"
+                    android:columnCount="2"
+                    android:orientation="horizontal"
+                    android:rowCount="8"
+                    android:useDefaultMargins="true">
+
+                <TextView
+                    style="@style/LabelText"
+                    android:text="Gender" />
+
+                <TextView
+                    android:id="@+id/tvGender"
+
+                    style="@style/ValueText"
+                    android:text="-" />
+
+                <TextView
+                    style="@style/LabelText"
+                    android:text="Roll No" />
+
+                <TextView
+                    android:id="@+id/tvRollNo"
+                    style="@style/ValueText"
+                    android:text="-" />
+
+                <!-- Row 9 -->
+                <TextView
+                    style="@style/LabelText"
+                    android:text="Class Name" />
+
+                <TextView
+                    android:id="@+id/tvClassSection"
+
+                    style="@style/ValueText"
+                    android:text="-" />
+
+
+                <!-- Row 5 -->
+                <TextView
+                    style="@style/LabelText"
+                    android:text="Mobile Number" />
+
+                <TextView
+                    android:id="@+id/tvMobileNumber"
+
+                    style="@style/ValueText"
+                    android:text="-" />
+
+                <!-- Row 6 -->
+                <TextView
+                    style="@style/LabelText"
+                    android:text="Address" />
+
+                <TextView
+                    android:id="@+id/tvPermanentAddress"
+
+                    style="@style/ValueText"
+                    android:text="-" />
+                </GridLayout>
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:background="#0A2A52">
+
+                    <!-- SCHOOL NAME -->
+                    <TextView
+                        android:id="@+id/Schooladdress"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="SCHOOL / UNIVERSITY Additional Info"
+                        android:textColor="@android:color/white"
+                        android:textStyle="bold"
+                        android:textSize="16sp"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="15dp"/>
+
+
+                </RelativeLayout>
+
+
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+        </LinearLayout>
+    </ScrollView>
+
 </FrameLayout>

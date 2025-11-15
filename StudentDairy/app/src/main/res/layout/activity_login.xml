@@ -12,7 +12,7 @@
         android:id="@+id/logo"
         android:layout_width="100dp"
         android:layout_height="100dp"
-        android:src="@drawable/cloud_"
+        android:src="@drawable/tf1"
     app:layout_constraintTop_toTopOf="parent"
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintEnd_toEndOf="parent"
@@ -23,7 +23,7 @@
         android:id="@+id/title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Student Diary Cloud"
+        android:text="Parent Login"
         android:textColor="@android:color/white"
         android:textSize="20sp"
         android:textStyle="bold"
@@ -106,15 +106,15 @@
             android:backgroundTint="#1E5AA8"
             android:textColor="@android:color/white"
             android:layout_marginTop="15dp"/>
-        <TextView
-            android:id="@+id/tvSignup"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Don't have an account? Singup"
-            android:textColor="#1E5AA8"
-            android:textStyle="bold"
-            android:layout_gravity="center"
-            android:layout_marginTop="16dp"/>
+<!--        <TextView-->
+<!--            android:id="@+id/tvSignup"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text="Don't have an account? Singup"-->
+<!--            android:textColor="#1E5AA8"-->
+<!--            android:textStyle="bold"-->
+<!--            android:layout_gravity="center"-->
+<!--            android:layout_marginTop="16dp"/>-->
         <ProgressBar
             android:id="@+id/progressBar"
             android:layout_width="wrap_content"

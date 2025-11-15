@@ -20,49 +20,164 @@ public class ProfileFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
         View view = inflater.inflate(R.layout.fragment_profile, container, false);
 
-        // ================= Back Arrow =================
-        ImageView backArrow = view.findViewById(R.id.setarrow);
-        backArrow.setOnClickListener(v -> {
-            requireActivity().getSupportFragmentManager().popBackStack();
+        // Find the ImageView
+        ImageView attarrow = view.findViewById(R.id.attarrow);
+
+        // Click → Intent to MainActivity
+        attarrow.setOnClickListener(v -> {
+            Intent intent = new Intent(getActivity(), MainActivity.class);
+            startActivity(intent);
         });
 
-        // ================= Disable Other Cards =================
-        int[] disabledCardIds = {
-                R.id.card_personal_details,
-                R.id.card_contact_details,
-                R.id.card_postal_details,
-                R.id.card_about_us,
-                R.id.card_privacy_policy,
-                R.id.card_support,
-                R.id.card_change_password,
-                R.id.card_share_app,
-                R.id.card_rate_app
-        };
+        // ================= Parent Profile Card =================
+        LinearLayout parentProfileCard = view.findViewById(R.id.card_personal_details);
+        parentProfileCard.setOnClickListener(v -> {
 
-        for (int id : disabledCardIds) {
-            LinearLayout card = view.findViewById(id);
-            card.setOnClickListener(v -> {
-                // Optional: show a Toast like "Coming Soon"
-            });
-        }
+            // Open ParentProfileFragment inside same Activity
+            requireActivity()
+                    .getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.fragment_container, new ParentProfileFragment())
+                    .addToBackStack(null)
+                    .commit();
+        });
+
+        // ================= Student Profile Card =================
+        LinearLayout StudentProfileCard = view.findViewById(R.id.card_Student_profile);
+        StudentProfileCard.setOnClickListener(v -> {
+
+            // Open ParentProfileFragment inside same Activity
+            requireActivity()
+                    .getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.fragment_container, new StudentProfileFragment())
+                    .addToBackStack(null)
+                    .commit();
+        });
+
+        // ================= Time Table Card =================//
+        LinearLayout TimeTableCard = view.findViewById(R.id.card_Timetable);
+        TimeTableCard.setOnClickListener(v -> {
+
+            // Open ParentProfileFragment inside same Activity
+            requireActivity()
+                    .getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.fragment_container, new TimeTableFragment())
+                    .addToBackStack(null)
+                    .commit();
+        });
+
+        // ================= Holiday Card =================//
+        LinearLayout HolidayCard = view.findViewById(R.id.card_holiday);
+        HolidayCard.setOnClickListener(v -> {
+
+            // Open ParentProfileFragment inside same Activity
+            requireActivity()
+                    .getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.fragment_container, new HolidayFragment())
+                    .addToBackStack(null)
+                    .commit();
+        });
+
+        // ================= privacy policy  Card =================//
+        LinearLayout privacypolicyCard= view.findViewById(R.id.card_privacy_policy);
+        privacypolicyCard.setOnClickListener(v -> {
+
+            // Open ParentProfileFragment inside same Activity
+            requireActivity()
+                    .getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.fragment_container, new PrivacyPolicyFragment())
+                    .addToBackStack(null)
+                    .commit();
+        });
+
+        // ================= support  Card =================//
+        LinearLayout supportCard= view.findViewById(R.id.card_support);
+        supportCard.setOnClickListener(v -> {
+
+            // Open ParentProfileFragment inside same Activity
+            requireActivity()
+                    .getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.fragment_container, new SupportFragment())
+                    .addToBackStack(null)
+                    .commit();
+        });
+
+        // ================= change Password  Card =================//
+        LinearLayout changepasswordCard= view.findViewById(R.id.card_change_password);
+        changepasswordCard.setOnClickListener(v -> {
+
+            // Open ParentProfileFragment inside same Activity
+            requireActivity()
+                    .getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.fragment_container, new UpdatePasswordFragment())
+                    .addToBackStack(null)
+                    .commit();
+        });
+
+        // ================= Shapre App Card =================//
+        LinearLayout ShareAppCard= view.findViewById(R.id.card_share_app);
+        ShareAppCard.setOnClickListener(v -> {
+
+            // Open ParentProfileFragment inside same Activity
+            requireActivity()
+                    .getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.fragment_container, new ShareAppFragment())
+                    .addToBackStack(null)
+                    .commit();
+        });
+
+//         ================= log out Card =================//
+//        LinearLayout logoutCard= view.findViewById(R.id.card_logout);
+//        logoutCard.setOnClickListener(v -> {
+//
+//            // Open ParentProfileFragment inside same Activity
+//            requireActivity()
+//                    .getSupportFragmentManager()
+//                    .beginTransaction()
+//                    .replace(R.id.fragment_container, new LoginActivity())
+//                    .addToBackStack(null)
+//                    .commit();
+//        });
+
 
         // ================= Log Out Card =================
         LinearLayout logoutCard = view.findViewById(R.id.card_logout);
         logoutCard.setOnClickListener(v -> {
-            // 1️⃣ Remove saved userid to log out
-            SharedPreferences prefs = requireActivity().getSharedPreferences("MyPref", getActivity().MODE_PRIVATE);
-            prefs.edit().remove("userid").apply(); // important
 
-            // 2️⃣ Start LoginActivity and clear back stack
+            // Clear Student login session
+            SharedPreferences studentPrefs = requireActivity()
+                    .getSharedPreferences("StudentProfile", requireActivity().MODE_PRIVATE);
+            studentPrefs.edit().clear().apply();
+
+            // Clear Parent profile session
+            SharedPreferences parentPrefs = requireActivity()
+                    .getSharedPreferences("ParentProfile", requireActivity().MODE_PRIVATE);
+            parentPrefs.edit().clear().apply();
+
+            // Clear timetable/homework session
+            SharedPreferences timePrefs = requireActivity()
+                    .getSharedPreferences("Homework", requireActivity().MODE_PRIVATE);
+            timePrefs.edit().clear().apply();
+
+            // Open LoginActivity
             Intent intent = new Intent(requireActivity(), LoginActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);
 
-            // 3️⃣ Finish current activity
+            // Close current activity
             requireActivity().finish();
         });
+
 
         return view;
     }

@@ -1,10 +1,12 @@
 package com.example.studentdairy;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CalendarView;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -30,6 +32,15 @@ public class CalenderFragment extends Fragment {
 
         calendarView = view.findViewById(R.id.calendarView);
         tvSelectedDate = view.findViewById(R.id.tvSelectedDate);
+
+        // Find the ImageView
+        ImageView attarrow = view.findViewById(R.id.attarrow);
+
+        // Click → Intent to MainActivity
+        attarrow.setOnClickListener(v -> {
+            Intent intent = new Intent(getActivity(), MainActivity.class);
+            startActivity(intent);
+        });
 
         // ✅ Always open on today's date
         Calendar today = Calendar.getInstance();
