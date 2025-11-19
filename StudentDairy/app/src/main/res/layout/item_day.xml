@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- A square cell: uses ConstraintLayout with a child that keeps 1:1 ratio.
+     The visible circular background is applied to the inner FrameLayout. -->
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="4dp">
+
+    <!-- This container will be forced to be square (width -> height) by the ratio.
+         Width is 0dp so it fills the column; height is 0dp so the ratio determines it. -->
+    <FrameLayout
+        android:id="@+id/dayContainer"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:foreground="?attr/selectableItemBackgroundBorderless"
+        android:padding="6dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintDimensionRatio="1:1" >
+
+        <TextView
+            android:id="@+id/tvDayNumber"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:textSize="14sp"
+            android:background="@drawable/circle_default"
+            android:padding="6dp"
+            android:textColor="@android:color/black"/>
+    </FrameLayout>
+
+<!--    &lt;!&ndash; Optional spacer to allow some breathing room below cells if needed &ndash;&gt;-->
+<!--    <View-->
+<!--        android:layout_width="0dp"-->
+<!--        android:layout_height="8dp"-->
+<!--        app:layout_constraintTop_toBottomOf="@id/dayContainer"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"/>-->
+</androidx.constraintlayout.widget.ConstraintLayout>

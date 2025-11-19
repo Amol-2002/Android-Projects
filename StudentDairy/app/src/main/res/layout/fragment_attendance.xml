@@ -1,84 +1,145 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-xmlns:tools="http://schemas.android.com/tools"
-android:layout_width="match_parent"
-android:layout_height="match_parent"
-xmlns:app="http://schemas.android.com/apk/res-auto"
-tools:context=".AttendanceFragment">
-
-<LinearLayout
-    android:background="@drawable/rounded_bg"
-    android:backgroundTint="#1E5AA8"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/root"
+    android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="90dp"
-    android:orientation="horizontal"
-    android:paddingHorizontal="20dp"
-    android:paddingVertical="12dp"
-    android:elevation="6dp">
+    android:layout_height="match_parent"
+    tools:context=".AttendanceFragment">
 
-    <!-- Left side (Image + Text together) -->
+    <!-- ============================= -->
+    <!--      HEADER (FULL-WIDTH)      -->
+    <!-- ============================= -->
     <LinearLayout
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:layout_marginTop="22dp"
+        android:id="@+id/headerCard"
+        android:layout_width="match_parent"
+        android:layout_height="90dp"
         android:orientation="horizontal"
-        android:gravity="center_vertical">
+        android:paddingHorizontal="20dp"
+        android:paddingVertical="12dp"
+        android:elevation="6dp"
+        android:background="@drawable/header_bg"
+        android:backgroundTint="#1E5AA8">
 
-        <!-- Image on Left -->
-        <ImageView
-            android:id="@+id/attarrow"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:src="@drawable/arrowback"
-            android:layout_marginEnd="10dp"
-            app:tint="@android:color/white"/>
+        <!-- Left side: Back arrow + Title -->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
 
-        <!-- Text on Right -->
-        <TextView
-            android:layout_width="wrap_content"
+            <ImageView
+                android:id="@+id/attarrow"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginEnd="10dp"
+                android:src="@drawable/arrowback"
+                app:tint="@android:color/white" />
+
+            <TextView
+                android:id="@+id/headerTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Attendance"
+                android:textColor="@android:color/white"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+    </LinearLayout>
+
+    <!-- ============================= -->
+    <!--       CONTENT AREA            -->
+    <!-- ============================= -->
+    <LinearLayout
+        android:id="@+id/contentArea"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="12dp">
+
+        <!-- Calendar navigation -->
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Attendance"
-            android:textColor="@color/white"
-            android:textSize="20sp"
-            android:textStyle="bold" />
+            android:orientation="horizontal"
+            android:background="@drawable/background_card"
+            android:gravity="center_vertical"
+            android:padding="8dp">
 
+            <ImageButton
+                android:id="@+id/btnPrev"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:src="@android:drawable/ic_media_previous" />
+
+            <TextView
+                android:id="@+id/tvMonthYear"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <ImageButton
+                android:id="@+id/btnNext"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:src="@android:drawable/ic_media_next" />
+        </LinearLayout>
+
+        <!-- Weekdays -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="25dp"
+            android:orientation="horizontal"
+            android:layout_marginTop="3dp"
+            android:background="@drawable/background_card"
+            android:layout_marginBottom="3dp">
+
+            <TextView android:layout_width="0dp" android:layout_weight="1"
+                android:gravity="center" android:text="Sun"  android:layout_height="20dp"/>
+
+            <TextView android:layout_width="0dp" android:layout_weight="1"
+                android:gravity="center" android:text="Mon" android:layout_height="20dp"/>
+
+            <TextView android:layout_width="0dp" android:layout_weight="1"
+                android:gravity="center" android:text="Tue" android:layout_height="20dp"/>
+
+            <TextView android:layout_width="0dp" android:layout_weight="1"
+                android:gravity="center" android:text="Wed" android:layout_height="20dp"/>
+
+            <TextView android:layout_width="0dp" android:layout_weight="1"
+                android:gravity="center" android:text="Thu" android:layout_height="20dp"/>
+
+            <TextView android:layout_width="0dp" android:layout_weight="1"
+                android:gravity="center" android:text="Fri" android:layout_height="20dp"/>
+
+            <TextView android:layout_width="0dp" android:layout_weight="1"
+                android:gravity="center" android:text="Sat" android:layout_height="20dp"/>
+        </LinearLayout>
+
+        <!-- Calendar Grid -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvCalendar"
+            android:layout_width="match_parent"
+            android:layout_height="430dp"
+            android:layout_weight="1"
+            android:background="@drawable/background_card" />
+
+        <TextView
+            android:id="@+id/tvLoadingOrError"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="8dp"
+            android:gravity="center"
+            android:visibility="gone"
+            android:text="" />
     </LinearLayout>
 
 </LinearLayout>
-    <!-- Card Container -->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/background_card"
-        android:elevation="4dp"
-        android:orientation="vertical"
-        android:layout_marginTop="100dp"
-        android:padding="16dp">
-
-        <!-- Header -->
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingBottom="8dp"
-            android:text="Attendance"
-            android:textColor="#1E3A8A"
-            android:textSize="18sp"
-            android:textStyle="bold" />
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginBottom="12dp"
-            android:background="#E2E8F0" />
-
-        <!-- RECYCLER -->
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerAttendance"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:padding="12dp"
-            android:clipToPadding="false"
-            android:scrollbars="vertical" />
-    </LinearLayout>
-</FrameLayout>

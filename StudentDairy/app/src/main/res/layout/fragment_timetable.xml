@@ -7,7 +7,7 @@
     tools:context=".AttendanceFragment">
 
     <LinearLayout
-        android:background="@drawable/rounded_bg"
+        android:background="@drawable/header_bg"
         android:backgroundTint="#1E5AA8"
         android:layout_width="match_parent"
         android:layout_height="90dp"
@@ -46,6 +46,31 @@
         </LinearLayout>
 
     </LinearLayout>
+
+
+    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/timetable_root"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="100dp"
+        android:padding="12dp">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvTimetable"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clipToPadding="false"
+            android:layout_marginBottom="80dp"
+            android:paddingBottom="16dp"/>
+
+        <ProgressBar
+            android:id="@+id/progress"
+            style="?android:attr/progressBarStyleLarge"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_gravity="center"
+            android:visibility="gone"/>
+    </FrameLayout>
 
 
 </FrameLayout>

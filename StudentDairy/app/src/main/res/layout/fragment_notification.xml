@@ -7,7 +7,7 @@
     tools:context=".NotificationFragment">
 
         <LinearLayout
-            android:background="@drawable/rounded_bg"
+            android:background="@drawable/header_bg"
             android:backgroundTint="#1E5AA8"
             android:layout_width="match_parent"
             android:layout_height="90dp"

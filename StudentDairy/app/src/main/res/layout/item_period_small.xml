@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/period_small_root"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:paddingTop="8dp"
+    android:paddingBottom="8dp"
+    android:paddingStart="6dp"
+    android:paddingEnd="6dp">
+
+    <TextView
+        android:id="@+id/tvPeriodSmallId"
+        android:layout_width="36dp"
+        android:layout_height="wrap_content"
+        android:text="1"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:textSize="14sp"
+        android:textColor="@android:color/black" />
+
+    <TextView
+        android:id="@+id/tvPeriodSmallTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="10:00 - 11:00"
+        android:textSize="12sp"
+        android:layout_marginRight="20dp"
+        android:gravity="center_vertical"
+        android:textColor="@android:color/black"/>
+
+        <TextView
+            android:id="@+id/tvPeriodSmallSub"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Math"
+            android:textStyle="bold"
+            android:layout_marginRight="20dp"
+            android:textSize="14sp"
+            android:textColor="@android:color/black" />
+
+        <TextView
+            android:id="@+id/tvPeriodSmallTeacher"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Mr. Sharma"
+            android:textSize="12sp"
+            android:alpha="0.85"
+            android:textStyle="italic"
+            android:textColor="@android:color/darker_gray"/>
+
+
+</LinearLayout>

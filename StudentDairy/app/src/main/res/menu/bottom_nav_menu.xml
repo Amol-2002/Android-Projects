@@ -1,34 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:tools="http://schemas.android.com/tools"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
         android:id="@+id/nav_home"
         android:icon="@drawable/home"
-        android:title="Home"
-        />
+        android:title="Home" />
 
     <item
         android:id="@+id/nav_message"
         android:icon="@drawable/message"
-        android:title="Message"
-        />
+        android:title="Message" />
 
     <item
         android:id="@+id/nav_idCard"
         android:icon="@drawable/idcard"
-        android:title="ID Card"
-        />
+        android:title="ID Card" />
 
     <item
         android:id="@+id/nav_notification"
         android:icon="@drawable/notification"
-        android:title="Notification"
-        />
+        android:title="Notification" />
 
     <item
         android:id="@+id/nav_profile"
         android:icon="@drawable/profile"
-        android:title="Profile"
-        />
+        android:title="Profile" />
+
 </menu>

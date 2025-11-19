@@ -140,7 +140,7 @@ public class HomeWorkFragment extends Fragment {
         fileButton.setPadding(8, 8, 8, 8);
         fileButton.setOnClickListener(v -> {
             String fullUrl = fileUrl.startsWith("http") ?
-                    fileUrl : "https://testing.trifrnd.com/Mansi/teacher/" + fileUrl;
+                    fileUrl : "https://testing.trifrnd.net.in/ishwar/school/" + fileUrl;
             Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(fullUrl));
             startActivity(intent);
         });
