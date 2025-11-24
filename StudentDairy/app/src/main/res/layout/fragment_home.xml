@@ -44,7 +44,7 @@
                 android:textSize="18sp" />
 
             <TextView
-                android:id="@+id/etParentName"
+                android:id="@+id/etStudentName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="AMOL BAPU BAGUL"
@@ -383,7 +383,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Holiday Holiday"
+                        android:text="Holiday"
                         android:textSize="12sp"
                         android:textColor="#000000"
                         android:gravity="center"/>

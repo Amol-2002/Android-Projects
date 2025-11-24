@@ -77,7 +77,7 @@
                     <!-- TOP HEADER IMAGE SECTION -->
                     <RelativeLayout
                         android:layout_width="match_parent"
-                        android:layout_height="250dp"
+                        android:layout_height="wrap_content"
                         android:background="#0A2A52">
 
                         <!-- SCHOOL NAME -->
@@ -111,7 +111,8 @@
                             android:layout_marginStart="115dp"
                             android:background="@drawable/profile_circle"
                             android:elevation="6dp"
-                            android:layout_marginTop="110dp"
+                            android:layout_marginTop="100dp"
+                            android:layout_marginBottom="10dp"
 
                             android:padding="5dp">
 
@@ -150,42 +151,68 @@
 
                 <GridLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:alignmentMode="alignMargins"
                     android:columnCount="2"
                     android:orientation="horizontal"
-                    android:rowCount="8"
+                    android:rowCount="9"
                     android:useDefaultMargins="true">
 
-                <TextView
+
+                    <TextView
+                        style="@style/LabelText"
+                        android:text="Roll No" />
+
+                    <TextView
+                        android:id="@+id/tvRollNo"
+                        style="@style/ValueText"
+                        android:text="-" />
+
+                    <TextView
+                        style="@style/LabelText"
+                        android:text="Class Name" />
+
+                    <TextView
+                        android:id="@+id/tvClassSection"
+
+                        style="@style/ValueText"
+                        android:text="-" />
+
+                    <TextView
+                        style="@style/LabelText"
+                        android:text="Date of Birth" />
+
+                    <TextView
+                        android:id="@+id/tvBirthDate"
+                        style="@style/ValueText"
+                        android:text="-" />
+
+                    <TextView
+                        style="@style/LabelText"
+                        android:text="Gender" />
+
+                    <TextView
+                        android:id="@+id/tvGender"
+
+                        style="@style/ValueText"
+                        android:text="-" />
+
+                    <TextView
                     style="@style/LabelText"
-                    android:text="Gender" />
+                    android:text="Parent Name" />
 
                 <TextView
-                    android:id="@+id/tvGender"
-
+                    android:id="@+id/tvParentFullName"
                     style="@style/ValueText"
                     android:text="-" />
 
-                <TextView
-                    style="@style/LabelText"
-                    android:text="Roll No" />
 
-                <TextView
-                    android:id="@+id/tvRollNo"
-                    style="@style/ValueText"
-                    android:text="-" />
+
+
+
 
                 <!-- Row 9 -->
-                <TextView
-                    style="@style/LabelText"
-                    android:text="Class Name" />
 
-                <TextView
-                    android:id="@+id/tvClassSection"
-
-                    style="@style/ValueText"
-                    android:text="-" />
 
 
                 <!-- Row 5 -->

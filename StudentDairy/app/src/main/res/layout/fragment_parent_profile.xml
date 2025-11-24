@@ -99,35 +99,35 @@
 
             </LinearLayout>
 
-            <FrameLayout
-                android:layout_width="60dp"
-                android:layout_height="60dp"
-                android:layout_gravity="center_vertical"
-                android:background="@drawable/profile_circle"
-                android:elevation="6dp"
-                android:padding="5dp">
+<!--            <FrameLayout-->
+<!--                android:layout_width="60dp"-->
+<!--                android:layout_height="60dp"-->
+<!--                android:layout_gravity="center_vertical"-->
+<!--                android:background="@drawable/profile_circle"-->
+<!--                android:elevation="6dp"-->
+<!--                android:padding="5dp">-->
 
-                <ImageView
-                    android:id="@+id/imgProfile"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@drawable/circle_mask"
-                    android:clipToOutline="true"
-                    android:contentDescription="User profile picture"
-                    android:scaleType="centerCrop"
-                    android:src="@drawable/ic_launcher_foreground" />
+<!--                <ImageView-->
+<!--                    android:id="@+id/imgProfile"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="match_parent"-->
+<!--                    android:background="@drawable/circle_mask"-->
+<!--                    android:clipToOutline="true"-->
+<!--                    android:contentDescription="User profile picture"-->
+<!--                    android:scaleType="centerCrop"-->
+<!--                    android:src="@drawable/ic_launcher_foreground" />-->
 
-                <ImageButton
-                    android:id="@+id/btnChangeProfile"
-                    android:layout_width="15dp"
-                    android:layout_height="15dp"
-                    android:layout_gravity="bottom|end"
-                    android:layout_margin="4dp"
-                    android:background="@drawable/aboutus"
-                    android:contentDescription="Change profile picture"
-                    android:padding="6dp"
-                    android:src="@drawable/student" />
-            </FrameLayout>
+<!--                <ImageButton-->
+<!--                    android:id="@+id/btnChangeProfile"-->
+<!--                    android:layout_width="15dp"-->
+<!--                    android:layout_height="15dp"-->
+<!--                    android:layout_gravity="bottom|end"-->
+<!--                    android:layout_margin="4dp"-->
+<!--                    android:background="@drawable/aboutus"-->
+<!--                    android:contentDescription="Change profile picture"-->
+<!--                    android:padding="6dp"-->
+<!--                    android:src="@drawable/student" />-->
+<!--            </FrameLayout>-->
         </LinearLayout>
 
         <!-- Details Grid -->

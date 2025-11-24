@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".AttendanceFragment">
+    android:background="#E9F2F4">
 
+    <!-- Keep your header as before -->
     <LinearLayout
         android:background="@drawable/header_bg"
         android:backgroundTint="#1E5AA8"
@@ -16,7 +17,6 @@
         android:paddingVertical="12dp"
         android:elevation="6dp">
 
-        <!-- Left side (Image + Text together) -->
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
@@ -25,16 +25,14 @@
             android:orientation="horizontal"
             android:gravity="center_vertical">
 
-            <!-- Image on Left -->
             <ImageView
                 android:id="@+id/attarrow"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:src="@drawable/arrowback"
                 android:layout_marginEnd="10dp"
-                app:tint="@android:color/white"/>
+                app:tint="@android:color/white" />
 
-            <!-- Text on Right -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -42,35 +40,103 @@
                 android:textColor="@color/white"
                 android:textSize="20sp"
                 android:textStyle="bold" />
-
         </LinearLayout>
-
     </LinearLayout>
 
+    <!-- Day selector (same earlier) -->
+    <LinearLayout
+        android:id="@+id/selector_root"
+        android:layout_width="match_parent"
+        android:layout_height="76dp"
+        android:layout_marginTop="96dp"
+        android:paddingStart="12dp"
+        android:paddingEnd="12dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
 
-    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/timetable_root"
+        <FrameLayout
+            android:id="@+id/selector_frame"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:background="@drawable/selector_bg"
+            android:padding="6dp">
+
+            <View
+                android:id="@+id/selected_pill"
+                android:layout_width="72dp"
+                android:layout_height="36dp"
+                android:layout_gravity="center_vertical"
+                android:background="@drawable/pill_bg" />
+
+            <HorizontalScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:overScrollMode="never"
+                android:scrollbars="none">
+                <LinearLayout
+                    android:id="@+id/days_container"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical" />
+            </HorizontalScrollView>
+
+        </FrameLayout>
+    </LinearLayout>
+
+    <!-- Table content area -->
+    <FrameLayout
+        android:id="@+id/content_area"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="100dp"
-        android:padding="12dp">
+        android:layout_marginTop="180dp"
+        android:layout_marginBottom="50dp"
+        android:padding="16dp">
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rvTimetable"
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:clipToPadding="false"
-            android:layout_marginBottom="80dp"
-            android:paddingBottom="16dp"/>
+            android:layout_height="wrap_content"
+            android:background="@drawable/rounded_bg">
 
-        <ProgressBar
-            android:id="@+id/progress"
-            style="?android:attr/progressBarStyleLarge"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
+            <TableLayout
+                android:id="@+id/tableTimetable"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:stretchColumns="0,1,2"
+                android:padding="8dp">
+                <!-- rows added dynamically -->
+            </TableLayout>
+
+
+        </ScrollView>
+
+        <!-- Empty state (image + text) -->
+        <LinearLayout
+            android:id="@+id/emptyBox"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
             android:layout_gravity="center"
-            android:visibility="gone"/>
+            android:visibility="gone"
+            android:padding="24dp">
+
+            <ImageView
+                android:id="@+id/emptyImage"
+                android:layout_width="220dp"
+                android:layout_height="220dp"
+                android:src="@drawable/nodata" />
+
+            <TextView
+                android:id="@+id/emptyText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Selected day Class schedule will be available\nonce your faculty is created in the system."
+                android:textAlignment="center"
+                android:textSize="16sp"
+                android:textColor="#222"
+                android:layout_marginTop="12dp" />
+        </LinearLayout>
+
     </FrameLayout>
-
-
 </FrameLayout>

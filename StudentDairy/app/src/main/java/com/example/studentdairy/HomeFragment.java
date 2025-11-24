@@ -1,16 +1,41 @@
 package com.example.studentdairy;
 
+import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.HttpHeaderParser;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONObject;
+import org.json.JSONException;
 
 public class HomeFragment extends Fragment {
+
+    private static final String STUDENT_API_URL = "https://testing.trifrnd.net.in/ishwar/school/api/student_api.php";
+
+    private ProgressDialog progressDialog;
+    private TextView etStudentName;
+
+    // Volley related
+    private RequestQueue requestQueue;
+    private final Object volleyRequestTag = new Object(); // tag used to cancel requests
 
     public HomeFragment() {
         // Required empty public constructor
@@ -27,32 +52,44 @@ public class HomeFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+                             Bundle savedInstanceState){
         View view = inflater.inflate(R.layout.fragment_home, container, false);
-        TextView parentNameTxt = view.findViewById(R.id.etParentName);
 
-        SharedPreferences prefs = requireContext().getSharedPreferences("ParentProfile", getActivity().MODE_PRIVATE);
-        String parentName = prefs.getString("parent_fullname", "Parent");
+        // Views
+        etStudentName = view.findViewById(R.id.etStudentName);
 
-        parentNameTxt.setText(parentName);
+        // init progress
+        progressDialog = new ProgressDialog(getContext());
+        progressDialog.setMessage("Loading...");
+        progressDialog.setCancelable(false);
 
-        // Example cards & icons
+        // Read mobile from StudentProfile prefs (saved on login)
+        SharedPreferences prefsStudent = requireContext()
+                .getSharedPreferences("StudentProfile", Context.MODE_PRIVATE);
 
-      ImageView itemAttendance = view.findViewById(R.id.item_attendance);
-      ImageView itemClassSchedule = view.findViewById(R.id.item_class_schedule);
-      ImageView itemOnlineClass = view.findViewById(R.id.onlineClasses_icon);
-      ImageView itemFeesPaid = view.findViewById(R.id.feespaid_icon);
+        String mobile = prefsStudent.getString("mobile", "");
+        if (mobile == null || mobile.isEmpty()) {
+            // fallback to "userid" if you stored under that key earlier
+            mobile = prefsStudent.getString("userid", "");
+        }
+
+        if (mobile != null && !mobile.isEmpty()) {
+            fetchStudentNameByMobile(mobile);
+        } else {
+            // Optional: show default name or leave the XML default
+            etStudentName.setText("Student");
+        }
+
+        // --- existing click listeners (unchanged) ---
+        ImageView itemAttendance = view.findViewById(R.id.item_attendance);
+        ImageView itemClassSchedule = view.findViewById(R.id.item_class_schedule);
+        ImageView itemOnlineClass = view.findViewById(R.id.onlineClasses_icon);
+        ImageView itemFeesPaid = view.findViewById(R.id.feespaid_icon);
         ImageView itemRegisterSubject = view.findViewById(R.id.registersubjects_icon);
         ImageView itemCertificateIcon = view.findViewById(R.id.Certificate_icon);
         ImageView itemCalenderIcon = view.findViewById(R.id.Calender_icon);
         ImageView itemItleIcon = view.findViewById(R.id.itle_icon);
         ImageView itemRailwayPass = view.findViewById(R.id.railway_icon);
-
-
-
-
-
-
 
         itemAttendance.setOnClickListener(v -> {
             Fragment parentProfileFragment = new ParentProfileFragment();
@@ -81,7 +118,6 @@ public class HomeFragment extends Fragment {
                     .commit();
         });
 
-
         itemFeesPaid.setOnClickListener(v -> {
             Fragment timeTableFragment  = new TimetableFragment();
             requireActivity().getSupportFragmentManager()
@@ -90,7 +126,6 @@ public class HomeFragment extends Fragment {
                     .addToBackStack(null)
                     .commit();
         });
-
 
         itemRegisterSubject.setOnClickListener(v -> {
             Fragment homeWorkFragment  = new HomeWorkFragment();
@@ -138,5 +173,145 @@ public class HomeFragment extends Fragment {
         });
 
         return view;
+    }
+
+    private void fetchStudentNameByMobile(String mobile) {
+        // If fragment not attached, bail out
+        if (!isAdded() || getContext() == null) return;
+
+        // Lazily create requestQueue using current context
+        if (requestQueue == null) {
+            requestQueue = Volley.newRequestQueue(getContext());
+        }
+
+        // Show progress only if fragment attached and progressDialog exists
+        if (isAdded() && progressDialog != null && !progressDialog.isShowing()) {
+            progressDialog.show();
+        }
+
+        JSONObject body = new JSONObject();
+        try {
+            body.put("mobile", mobile);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        JsonObjectRequest req = new JsonObjectRequest(
+                Request.Method.POST,
+                STUDENT_API_URL,
+                body,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        // If fragment is no longer attached, ignore the response
+                        if (!isAdded()) {
+                            if (progressDialog != null && progressDialog.isShowing()) {
+                                try { progressDialog.dismiss(); } catch (Exception ignored) {}
+                            }
+                            return;
+                        }
+
+                        // safely dismiss progress
+                        if (progressDialog != null && progressDialog.isShowing()) {
+                            progressDialog.dismiss();
+                        }
+
+                        try {
+                            JSONObject dataObj = null;
+                            if (response.has("data") && !response.isNull("data")) {
+                                dataObj = response.optJSONObject("data");
+                            } else {
+                                dataObj = response;
+                            }
+
+                            if (dataObj != null) {
+                                String first = dataObj.optString("first_name", "");
+                                String middle = dataObj.optString("middle_name", "");
+                                String last = dataObj.optString("last_name", "");
+                                String fullName = joinNonEmpty(" ", first, middle, last);
+                                if (fullName.isEmpty()) fullName = dataObj.optString("parent_fullname", "Student");
+                                // Update UI safely (fragment is attached here)
+                                etStudentName.setText(fullName);
+                            } else {
+                                etStudentName.setText("Student");
+                                if (getContext() != null) {
+                                    Toast.makeText(getContext(), "Student data not found", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                            if (getContext() != null) {
+                                Toast.makeText(getContext(), "Parse error", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        // If fragment is no longer attached, ignore the response
+                        if (!isAdded()) {
+                            if (progressDialog != null && progressDialog.isShowing()) {
+                                try { progressDialog.dismiss(); } catch (Exception ignored) {}
+                            }
+                            return;
+                        }
+
+                        // safely dismiss progress
+                        if (progressDialog != null && progressDialog.isShowing()) {
+                            progressDialog.dismiss();
+                        }
+
+                        etStudentName.setText("Student");
+                        String msg = "Request failed";
+                        if (error.networkResponse != null) {
+                            int statusCode = error.networkResponse.statusCode;
+                            msg = "Server returned: " + statusCode;
+                            try {
+                                String data = new String(error.networkResponse.data, HttpHeaderParser.parseCharset(error.networkResponse.headers));
+                                msg += " - " + data;
+                            } catch (Exception ignored) {}
+                        } else if (error.getMessage() != null) {
+                            msg = error.getMessage();
+                        }
+                        if (getContext() != null) {
+                            Toast.makeText(getContext(), msg, Toast.LENGTH_LONG).show();
+                        }
+                    }
+                }
+        );
+
+        // tag the request so we can cancel it later if fragment view is destroyed
+        req.setTag(volleyRequestTag);
+        requestQueue.add(req);
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+
+        // Cancel any pending requests tagged with volleyRequestTag
+        if (requestQueue != null) {
+            requestQueue.cancelAll(volleyRequestTag);
+        }
+
+        // Dismiss and nullify progressDialog to avoid window leaks
+        if (progressDialog != null) {
+            try {
+                if (progressDialog.isShowing()) progressDialog.dismiss();
+            } catch (Exception ignored) {}
+            progressDialog = null;
+        }
+    }
+
+    private String joinNonEmpty(String sep, String... parts) {
+        StringBuilder sb = new StringBuilder();
+        for (String p : parts) {
+            if (p != null && !p.trim().isEmpty()) {
+                if (sb.length() > 0) sb.append(sep);
+                sb.append(p.trim());
+            }
+        }
+        return sb.toString();
     }
 }

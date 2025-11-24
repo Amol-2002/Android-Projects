@@ -128,10 +128,27 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvCalendar"
             android:layout_width="match_parent"
-            android:layout_height="430dp"
+            android:layout_height="330dp"
             android:layout_weight="1"
             android:background="@drawable/background_card" />
-
+<!--        <LinearLayout-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:orientation="vertical"-->
+<!--            android:background="@drawable/rounded_bg">-->
+<!--            <TextView-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="Red Circle      : - Holiday"/>-->
+<!--            <TextView-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="Green Circle  : - Present"/>-->
+<!--            <TextView-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="Yellow Circle : - Absent"/>-->
+<!--        </LinearLayout>-->
         <TextView
             android:id="@+id/tvLoadingOrError"
             android:layout_width="match_parent"

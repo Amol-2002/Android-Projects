@@ -3,14 +3,8 @@ package com.example.studentdairy;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.util.Log;
+import android.widget.Toast;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,12 +12,16 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
 import com.example.studentdairy.adapter.DayAdapter;
 import com.example.studentdairy.model.Day;
 
@@ -50,18 +48,25 @@ public class AttendanceFragment extends Fragment {
     private Set<String> absentDates = new HashSet<>();
     private Set<String> holidayDates = new HashSet<>();
 
-    // IDs (from prefs / args)
-    private String classId = "1";
-    private String sectionId = "A";
-    private String studentId = "123";
+    // IDs (load from prefs; defaults empty)
+    private String classId = "";
+    private String sectionId = "";
+    private String studentId = "";
 
-    private final String ATTEND_URL = "https://trifrnd.co.in/school/api/data.php?apicall=attend";
-    private final String HOLIDAY_URL = "https://testing.trifrnd.net.in/ishwar/school/api/holiday_api.php"; // your holiday API
+    private final String ATTEND_URL = "https://testing.trifrnd.net.in/ishwar/school/api/std_attend_api.php";
+    private final String HOLIDAY_URL = "https://testing.trifrnd.net.in/ishwar/school/api/holiday_api.php";
+    private final String STUDENT_API_URL = "https://testing.trifrnd.net.in/ishwar/school/api/student_api.php";
 
     private RequestQueue requestQueue;
 
     private SimpleDateFormat serverSdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
     private SimpleDateFormat monthYearSdf = new SimpleDateFormat("MMMM yyyy", Locale.getDefault());
+
+    private static final String TAG = "AttendanceFragment";
+
+    // prefs + listener
+    private SharedPreferences prefs;
+    private SharedPreferences.OnSharedPreferenceChangeListener prefsListener;
 
     public AttendanceFragment() { }
 
@@ -81,18 +86,30 @@ public class AttendanceFragment extends Fragment {
         attArrow = view.findViewById(R.id.attarrow);
         headerTitle = view.findViewById(R.id.headerTitle);
 
-        // load IDs from SharedPreferences (if saved)
-        SharedPreferences prefs = requireActivity().getSharedPreferences("StudentProfile", Context.MODE_PRIVATE);
-        classId = prefs.getString("class_id", classId);
-        sectionId = prefs.getString("section_id", sectionId);
-        studentId = prefs.getString("student_id", studentId);
+        prefs = requireActivity().getSharedPreferences("StudentProfile", Context.MODE_PRIVATE);
 
-        // args override
+        // register prefs listener to auto-refresh when profile updates
+        prefsListener = (sharedPreferences, key) -> {
+            if ("class_id".equals(key) || "section_id".equals(key) || "student_id".equals(key) || "userid".equals(key) || "mobile".equals(key)) {
+                Log.d(TAG, "Prefs changed (" + key + "), reloading IDs and refreshing attendance");
+                loadIdsFromPrefs();
+                // Start flow again: fetch student profile (if mobile available) then holidays & attendance
+                fetchStudentProfileThenAttendance();
+            }
+        };
+        prefs.registerOnSharedPreferenceChangeListener(prefsListener);
+
+        // initial load IDs (may be empty)
+        loadIdsFromPrefs();
+
+        // args override (if provided)
         if (getArguments() != null) {
-            if (getArguments().containsKey("class_id")) classId = getArguments().getString("class_id");
-            if (getArguments().containsKey("section_id")) sectionId = getArguments().getString("section_id");
-            if (getArguments().containsKey("student_id")) studentId = getArguments().getString("student_id");
+            if (getArguments().containsKey("class_id")) classId = getArguments().getString("class_id", classId);
+            if (getArguments().containsKey("section_id")) sectionId = getArguments().getString("section_id", sectionId);
+            if (getArguments().containsKey("student_id")) studentId = getArguments().getString("student_id", studentId);
         }
+
+        Log.d(TAG, "Initial IDs -> classId: " + classId + " sectionId: " + sectionId + " studentId: " + studentId);
 
         if (headerTitle != null) headerTitle.setText("Attendance");
         if (attArrow != null) attArrow.setOnClickListener(v -> requireActivity().onBackPressed());
@@ -114,99 +131,236 @@ public class AttendanceFragment extends Fragment {
             renderCalendar();
         });
 
-        // IMPORTANT: fetch holidays first, then attendance
-        fetchHolidayThenAttendance();
+        // Flow: fetch student profile first (if possible), then holidays -> attendance
+        fetchStudentProfileThenAttendance();
     }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        if (prefs != null && prefsListener != null) {
+            prefs.unregisterOnSharedPreferenceChangeListener(prefsListener);
+        }
+    }
+
+    /**
+     * Try multiple keys to load IDs from StudentProfile SharedPreferences.
+     * This handles inconsistent key-names used across fragments.
+     */
+    private void loadIdsFromPrefs() {
+        try {
+            SharedPreferences prefsLocal = requireActivity().getSharedPreferences("StudentProfile", Context.MODE_PRIVATE);
+
+            // try the common keys first
+            String c1 = prefsLocal.getString("class_id", "");
+            String s1 = prefsLocal.getString("section_id", "");
+            String st1 = prefsLocal.getString("student_id", "");
+
+            // also consider alternate keys that other code used
+            String c2 = prefsLocal.getString("class", prefsLocal.getString("class_id", ""));
+            String s2 = prefsLocal.getString("section", prefsLocal.getString("section_id", ""));
+            String st2 = prefsLocal.getString("userid", prefsLocal.getString("student_id", ""));
+
+            // Some places stored 'class_section' or 'class_name'
+            String c3 = prefsLocal.getString("class_section", prefsLocal.getString("class_name", ""));
+
+            // pick first non-empty for each
+            classId = firstNonEmpty(c1, c2, c3, "");
+            sectionId = firstNonEmpty(s1, s2, "");
+            studentId = firstNonEmpty(st1, st2, "");
+
+            // As a last resort, try StudentProfile 'mobile' (sometimes student id used as mobile)
+            if (studentId.isEmpty()) {
+                studentId = prefsLocal.getString("mobile", prefsLocal.getString("userid", ""));
+            }
+
+            Log.d(TAG, "Loaded IDs from prefs -> classId:" + classId + " sectionId:" + sectionId + " studentId:" + studentId);
+        } catch (Exception e) {
+            Log.e(TAG, "Error reading prefs", e);
+        }
+    }
+
+    private String firstNonEmpty(String... vals) {
+        for (String v : vals) {
+            if (v != null && !v.trim().isEmpty()) return v.trim();
+        }
+        return "";
+    }
+
+    /**
+     * Step 1: Attempt to call student_api.php with mobile (if available).
+     * If successful, extract student_id, class_id, section_id, save to prefs (commit),
+     * then proceed to fetch holidays and attendance.
+     *
+     * If mobile is not available or student API fails, fallback to reading existing prefs and continue.
+     */
+    /**
+     * Step 1: Attempt to call student_api.php with mobile (if available).
+     * If successful, extract student_id, class_id, section_id, save to prefs (commit),
+     * then proceed to fetch holidays and attendance.
+     *
+     * If mobile is not available or student API fails, fallback to reading existing prefs and continue.
+     */
+    private void fetchStudentProfileThenAttendance() {
+        // reload IDs from prefs (to get the mobile or userid if already present)
+        loadIdsFromPrefs();
+
+        // get mobile or userid from prefs
+        String mobile = prefs.getString("mobile", prefs.getString("userid", ""));
+        if (mobile == null) mobile = "";
+
+        // make a final copy for lambda capture
+        final String mobileFinal = mobile;
+
+        if (mobileFinal.trim().isEmpty()) {
+            Log.w(TAG, "No mobile/userid in prefs; will proceed with whatever IDs we have (may be empty)");
+            // proceed with holidays & attendance using whatever is in prefs
+            fetchHolidayThenAttendance();
+            return;
+        }
+
+        tvLoading.setVisibility(View.VISIBLE);
+        tvLoading.setText("Fetching profile...");
+
+        StringRequest profileReq = new StringRequest(Request.Method.POST, STUDENT_API_URL,
+                response -> {
+                    try {
+                        JSONObject root = new JSONObject(response);
+                        JSONObject data = root.optJSONObject("data");
+                        if (data != null) {
+                            // Extract fields (convert to strings)
+                            String fetchedStudentId = data.optString("student_id", data.optString("userid", ""));
+                            String fetchedClassId = String.valueOf(data.optString("class_id", data.optString("class", "")));
+                            String fetchedSectionId = data.optString("section_id", data.optString("section", ""));
+
+                            // Update local fields
+                            if (fetchedStudentId != null && !fetchedStudentId.trim().isEmpty()) studentId = fetchedStudentId.trim();
+                            if (fetchedClassId != null && !fetchedClassId.trim().isEmpty()) classId = fetchedClassId.trim();
+                            if (fetchedSectionId != null && !fetchedSectionId.trim().isEmpty()) sectionId = fetchedSectionId.trim();
+
+                            // Save critical keys to StudentProfile prefs synchronously so other fragments see them immediately
+                            try {
+                                SharedPreferences.Editor ed = prefs.edit();
+                                ed.putString("student_id", studentId);
+                                ed.putString("class_id", classId);
+                                ed.putString("section_id", sectionId);
+                                ed.putString("userid", mobileFinal);
+                                ed.putString("mobile", mobileFinal);
+                                ed.commit(); // commit synchronously
+                                Log.d(TAG, "Saved fetched profile to prefs: student_id=" + studentId + " class_id=" + classId + " section_id=" + sectionId);
+                            } catch (Exception e) {
+                                Log.e(TAG, "Error committing profile prefs", e);
+                            }
+                        } else {
+                            Log.w(TAG, "student_api returned no data for mobile=" + mobileFinal);
+                        }
+                    } catch (Exception e) {
+                        Log.e(TAG, "Error parsing student_api response", e);
+                    } finally {
+                        // proceed to holidays & attendance whether profile fetch succeeded or not
+                        fetchHolidayThenAttendance();
+                    }
+                },
+                error -> {
+                    Log.e(TAG, "student_api request failed: " + error.getMessage(), error);
+                    // fallback: proceed with whatever we have in prefs
+                    fetchHolidayThenAttendance();
+                }) {
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> map = new HashMap<>();
+                map.put("mobile", mobileFinal);
+                return map;
+            }
+        };
+
+        requestQueue.add(profileReq);
+    }
+
 
     // fetch holidays then attendance
     private void fetchHolidayThenAttendance() {
+        if (getContext() == null) return;
+
         tvLoading.setVisibility(View.VISIBLE);
         tvLoading.setText("Loading holidays...");
 
         StringRequest holidayRequest = new StringRequest(Request.Method.GET, HOLIDAY_URL,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        try {
-                            holidayDates.clear();
-                            JSONObject root = new JSONObject(response);
-                            if (root.has("data")) {
-                                JSONArray arr = root.getJSONArray("data");
-                                for (int i = 0; i < arr.length(); i++) {
-                                    JSONObject obj = arr.getJSONObject(i);
-                                    String hDate = obj.optString("H_Date", "").trim();
-                                    if (!hDate.isEmpty() && hDate.matches("\\d{4}-\\d{2}-\\d{2}")) {
-                                        holidayDates.add(hDate);
-                                    }
+                response -> {
+                    try {
+                        holidayDates.clear();
+                        JSONObject root = new JSONObject(response);
+                        if (root.has("data")) {
+                            JSONArray arr = root.getJSONArray("data");
+                            for (int i = 0; i < arr.length(); i++) {
+                                JSONObject obj = arr.getJSONObject(i);
+                                String hDate = obj.optString("H_Date", "").trim();
+                                if (!hDate.isEmpty() && hDate.matches("\\d{4}-\\d{2}-\\d{2}")) {
+                                    holidayDates.add(hDate);
                                 }
                             }
-                        } catch (Exception e) {
-                            Log.e("HolidayParse", "Error parsing holiday API", e);
-                        } finally {
-                            fetchAttendanceAndRender();
                         }
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Log.e("HolidayAPI", "Holiday API failed, continuing", error);
+                    } catch (Exception e) {
+                        Log.e(TAG, "Error parsing holiday API", e);
+                    } finally {
                         fetchAttendanceAndRender();
                     }
+                },
+                error -> {
+                    Log.e(TAG, "Holiday API failed, continuing", error);
+                    fetchAttendanceAndRender();
                 }
         );
 
         requestQueue.add(holidayRequest);
     }
 
-    // fetch attendance (POST)
+    // fetch attendance (POST) — reload IDs from prefs to ensure latest values are used
     private void fetchAttendanceAndRender() {
+        // reload IDs from prefs to ensure latest saved values (in case student_api just wrote them)
+        loadIdsFromPrefs();
+
         tvLoading.setVisibility(View.VISIBLE);
         tvLoading.setText("Loading attendance...");
 
         StringRequest postRequest = new StringRequest(Request.Method.POST, ATTEND_URL,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        tvLoading.setVisibility(View.GONE);
-                        try {
-                            JSONArray arr;
-                            if (response.trim().startsWith("[")) {
-                                arr = new JSONArray(response);
-                            } else {
-                                JSONObject obj = new JSONObject(response);
-                                if (obj.has("data")) arr = obj.getJSONArray("data");
-                                else if (obj.has("attendance")) arr = obj.getJSONArray("attendance");
-                                else arr = new JSONArray();
-                            }
-
-                            presentDates.clear();
-                            absentDates.clear();
-
-                            for (int i = 0; i < arr.length(); i++) {
-                                JSONObject at = arr.getJSONObject(i);
-                                String status = at.optString("status", "").trim();
-                                String a_date = at.optString("a_date", "").trim();
-
-                                if (a_date.isEmpty()) continue;
-
-                                if ("P".equalsIgnoreCase(status)) presentDates.add(a_date);
-                                else if ("A".equalsIgnoreCase(status)) absentDates.add(a_date);
-                            }
-                        } catch (Exception e) {
-                            Log.e("AttendanceParse", "Error parsing attendance", e);
-                        } finally {
-                            renderCalendar();
+                response -> {
+                    tvLoading.setVisibility(View.GONE);
+                    try {
+                        JSONArray arr;
+                        if (response.trim().startsWith("[")) {
+                            arr = new JSONArray(response);
+                        } else {
+                            JSONObject obj = new JSONObject(response);
+                            if (obj.has("data")) arr = obj.getJSONArray("data");
+                            else if (obj.has("attendance")) arr = obj.getJSONArray("attendance");
+                            else arr = new JSONArray();
                         }
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        tvLoading.setVisibility(View.VISIBLE);
-                        tvLoading.setText("Attendance load failed");
+
+                        presentDates.clear();
+                        absentDates.clear();
+
+                        for (int i = 0; i < arr.length(); i++) {
+                            JSONObject at = arr.getJSONObject(i);
+                            String status = at.optString("status", "").trim();
+                            String a_date = at.optString("a_date", "").trim();
+
+                            if (a_date.isEmpty()) continue;
+
+                            if ("P".equalsIgnoreCase(status) || "present".equalsIgnoreCase(status)) presentDates.add(a_date);
+                            else if ("A".equalsIgnoreCase(status) || "absent".equalsIgnoreCase(status)) absentDates.add(a_date);
+                        }
+                    } catch (Exception e) {
+                        Log.e(TAG, "Error parsing attendance", e);
+                    } finally {
                         renderCalendar();
                     }
+                },
+                error -> {
+                    tvLoading.setVisibility(View.VISIBLE);
+                    tvLoading.setText("Attendance load failed");
+                    Log.e(TAG, "Attendance API error", error);
+                    renderCalendar();
                 }
         ) {
             @Override
@@ -215,6 +369,7 @@ public class AttendanceFragment extends Fragment {
                 map.put("class_id", classId);
                 map.put("section_id", sectionId);
                 map.put("student_id", studentId);
+                Log.d(TAG, "Attendance POST params: " + map.toString());
                 return map;
             }
         };

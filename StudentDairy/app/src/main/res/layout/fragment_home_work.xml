@@ -35,136 +35,101 @@
             android:textSize="20sp"
             android:textStyle="bold" />
     </LinearLayout>
-<!--<FrameLayout-->
-<!--    android:id="@+id/class_frame"-->
-<!--    android:layout_width="match_parent"-->
-<!--    android:layout_height="wrap_content"/>-->
 
-
-<!--    &lt;!&ndash; Tabs &ndash;&gt;-->
-<!--    <com.google.android.material.tabs.TabLayout-->
-<!--        android:id="@+id/tabLayout"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        app:tabGravity="fill"-->
-<!--        app:tabMode="fixed"-->
-<!--        android:layout_marginTop="10dp"-->
-<!--        app:tabIndicatorColor="@color/white"-->
-<!--        android:background="@drawable/rounded_bg"-->
-<!--        app:tabTextColor="@android:color/white"-->
-<!--        android:layout_marginStart="10dp"-->
-<!--        android:layout_marginEnd="10dp"-->
-<!--        android:layout_marginBottom="10dp"-->
-<!--        android:backgroundTint="#1E5AA8"-->
-<!--        app:tabSelectedTextColor="@android:color/white"/>-->
-
-<!--    <FrameLayout-->
-<!--        android:id="@+id/tabContent"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="0dp"-->
-<!--        android:layout_weight="1">-->
-
-<!--        &lt;!&ndash; Placeholder for now &ndash;&gt;-->
-<!--        <LinearLayout-->
-<!--            android:orientation="vertical"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="match_parent"-->
-<!--            android:gravity="center">-->
-
-<!--            <ImageView-->
-<!--                android:layout_width="110dp"-->
-<!--                android:layout_height="55dp"-->
-<!--                android:src="@drawable/nodata" />-->
-
-<!--            <TextView-->
-<!--                android:layout_width="290dp"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:textAlignment="center"-->
-<!--                android:text="Selected day Class schedule will be available once your faculty is created in the system." />-->
-<!--        </LinearLayout>-->
-
-<!--    </FrameLayout>-->
-    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    <LinearLayout
+        android:id="@+id/rootHomework"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="16dp"
-        android:layout_marginBottom="25dp"
-        android:background="#F6F4F4">
+        android:orientation="vertical"
+        android:padding="12dp"
+        android:background="@color/white">
 
+        <!-- Top header (keep your existing header if needed) -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+
+            <TextView
+                android:id="@+id/tvHwTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Homework"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <!-- Date picker row -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="horizontal"
+            android:layout_marginTop="8dp"
+            android:gravity="center_vertical">
 
-            <!-- Card Container -->
-            <LinearLayout
-                android:layout_width="match_parent"
+            <!-- FrameLayout wrapper gives ripple/feedback when tapped -->
+            <FrameLayout
+                android:layout_width="0dp"
+                android:layout_weight="1"
                 android:layout_height="wrap_content"
-                android:background="@drawable/background_card"
-                android:elevation="4dp"
-                android:orientation="vertical"
-                android:padding="16dp">
+                android:foreground="?attr/selectableItemBackground">
 
-                <!-- Header -->
                 <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:paddingBottom="8dp"
-                    android:text="Homework "
-                    android:textColor="#1E3A8A"
-                    android:textSize="18sp"
-                    android:textStyle="bold" />
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_marginBottom="12dp"
-                    android:background="#E2E8F0" />
-
-
-
-                <!-- ===== Table Header ===== -->
-                <TableLayout
-                    android:id="@+id/tableLayout"
+                    android:id="@+id/tvSelectedDate"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:stretchColumns="*"
-                    android:background="#FFFFFF"
-                    android:padding="8dp"
-                    android:divider="@android:color/darker_gray"
-                    android:showDividers="middle">
+                    android:text="Select date"
+                    android:padding="12dp"
+                    android:paddingStart="16dp"
+                    android:paddingEnd="16dp"
+                    android:background="@drawable/rounded_bg"
+                    android:gravity="center_vertical"
+                    android:textSize="16sp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:contentDescription="Selected date — tap to pick a date" />
 
-                    <TableRow
-                        android:background="#DBD8CF"
-                        android:padding="8dp">
+            </FrameLayout>
 
-                        <TextView
-                            android:text="Sr.No"
-                            android:textStyle="bold"
-                            android:textColor="#000"
-                            android:gravity="center" />
 
-                        <TextView
-                            android:text="Subject"
-                            android:textStyle="bold"
-                            android:textColor="#000"
-                            android:gravity="center" />
 
-                        <TextView
-                            android:text="Date"
-                            android:textStyle="bold"
-                            android:textColor="#000"
-                            android:gravity="center" />
+            <Button
+                android:id="@+id/btnClear"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Clear"
+                android:layout_marginStart="8dp"/>
 
-                        <TextView
-                            android:text="File"
-                            android:textStyle="bold"
-                            android:textColor="#000"
-                            android:gravity="center" />
-                    </TableRow>
-                </TableLayout>
-            </LinearLayout>
+            <Button
+                android:id="@+id/btnPickDate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:backgroundTint="@color/white"
+                android:text="" />
 
         </LinearLayout>
-    </ScrollView>
+
+        <!-- List -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvHomework"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:layout_marginTop="12dp"
+            android:padding="6dp" />
+
+        <!-- Empty text -->
+        <TextView
+            android:id="@+id/tvHwEmpty"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="No homework for this day"
+            android:textAlignment="center"
+            android:visibility="gone"
+            android:textSize="16sp"
+            android:padding="12dp"/>
+    </LinearLayout>
+
 </LinearLayout>

@@ -1,6 +1,5 @@
 package com.example.studentdairy;
 
-import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -8,16 +7,13 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-
-import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link NotificationFragment#newInstance} factory method to
+ * Use the {@link AboutusFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class NotificationFragment extends Fragment {
+public class AboutusFragment extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -28,9 +24,7 @@ public class NotificationFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
-
-
-    public NotificationFragment() {
+    public AboutusFragment() {
         // Required empty public constructor
     }
 
@@ -40,11 +34,11 @@ public class NotificationFragment extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment NotificationFragment.
+     * @return A new instance of fragment AboutusFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static NotificationFragment newInstance(String param1, String param2) {
-        NotificationFragment fragment = new NotificationFragment();
+    public static AboutusFragment newInstance(String param1, String param2) {
+        AboutusFragment fragment = new AboutusFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -64,26 +58,7 @@ public class NotificationFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_notification, container, false);
-
-        // 🔹 Find arrow (make sure id = attarrow in fragment_attendance.xml)
-        ImageView backArrow = view.findViewById(R.id.attarrow);
-
-        backArrow.setOnClickListener(v -> {
-            // Replace with HomeFragment
-            Fragment homeFragment = new HomeFragment();
-            requireActivity().getSupportFragmentManager()
-                    .beginTransaction()
-                    .replace(R.id.fragment_container, homeFragment)
-                    .addToBackStack(null)
-                    .commit();
-
-            // 🔹 Update bottom navigation to Home
-            BottomNavigationView bottomNav = requireActivity().findViewById(R.id.bottom_navigation);
-            bottomNav.setSelectedItemId(R.id.fragment_container);
-        });
-
-        return view;
+        // Inflate the layout for this fragment
+        return inflater.inflate(R.layout.fragment_aboutus, container, false);
     }
-
 }

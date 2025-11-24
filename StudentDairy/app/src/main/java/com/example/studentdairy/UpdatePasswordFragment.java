@@ -1,5 +1,4 @@
 package com.example.studentdairy;
-
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -30,7 +29,7 @@ public class UpdatePasswordFragment extends Fragment {
     Button btnUpdate;
     SharedPreferences sharedPreferences;
 
-    private static final String UPDATE_URL = "https://trifrnd.co.in/school/api/data.php?apicall=updatepwd";
+    private static final String UPDATE_URL = "https://testing.trifrnd.net.in/ishwar/school/api/pwd_update_api.php";
 
     @Nullable
     @Override

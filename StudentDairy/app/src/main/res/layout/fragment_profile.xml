@@ -59,197 +59,45 @@
 
             <!-- Card Template -->
 <!--  Parent Profile-->
-            <LinearLayout
-                android:id="@+id/card_personal_details"
-                android:layout_width="match_parent"
-                android:layout_height="60dp"
-                android:orientation="horizontal"
-                android:background="@drawable/rounded_bg"
-                android:paddingHorizontal="16dp"
-                android:gravity="center_vertical"
-                android:layout_marginBottom="12dp"
-                android:elevation="4dp"
-                android:clickable="true"
-                android:focusable="true"
-                android:foreground="?attr/selectableItemBackground">
 
-                <ImageView
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:src="@drawable/profile"
-                    android:contentDescription="Personal Details Icon"
-                    app:tint="#1E5AA8" />
+<!--            &lt;!&ndash; About Us &ndash;&gt;-->
+<!--            <LinearLayout-->
+<!--                android:id="@+id/card_about_us"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="60dp"-->
+<!--                android:orientation="horizontal"-->
+<!--                android:background="@drawable/rounded_bg"-->
+<!--                android:paddingHorizontal="16dp"-->
+<!--                android:gravity="center_vertical"-->
+<!--                android:layout_marginBottom="12dp"-->
+<!--                android:elevation="4dp"-->
+<!--                android:clickable="true"-->
+<!--                android:focusable="true"-->
+<!--                android:foreground="?attr/selectableItemBackground">-->
 
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:text="Parent Profile"
-                    android:textColor="#000"
-                    android:textSize="18sp"
-                    android:layout_marginStart="16dp"
-                    android:layout_weight="1"/>
+<!--                <ImageView-->
+<!--                    android:layout_width="24dp"-->
+<!--                    android:layout_height="24dp"-->
+<!--                    android:src="@drawable/aboutus"-->
+<!--                    android:contentDescription="About Us Icon"-->
+<!--                    app:tint="#1E5AA8"/>-->
 
-                <ImageView
-                    android:id="@+id/arrow_Parent_Profile"
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:src="@drawable/ic_arrow_right"
-                    android:contentDescription="Go to Personal Details"/>
-            </LinearLayout>
-<!--Student Profile-->
-            <LinearLayout
-                android:id="@+id/card_Student_profile"
-                android:layout_width="match_parent"
-                android:layout_height="60dp"
-                android:orientation="horizontal"
-                android:background="@drawable/rounded_bg"
-                android:paddingHorizontal="16dp"
-                android:gravity="center_vertical"
-                android:layout_marginBottom="12dp"
-                android:elevation="4dp"
-                android:clickable="true"
-                android:focusable="true"
-                android:foreground="?attr/selectableItemBackground">
+<!--                <TextView-->
+<!--                    android:layout_width="0dp"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:text="About Us"-->
+<!--                    android:textColor="#000"-->
+<!--                    android:textSize="18sp"-->
+<!--                    android:layout_marginStart="16dp"-->
+<!--                    android:layout_weight="1"/>-->
 
-                <ImageView
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:src="@drawable/profile"
-                    android:contentDescription="Personal Details Icon"
-                    app:tint="#1E5AA8" />
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:text="Student Profile"
-                    android:textColor="#000"
-                    android:textSize="18sp"
-                    android:layout_marginStart="16dp"
-                    android:layout_weight="1"/>
-
-                <ImageView
-                    android:id="@+id/arrow_personal_details"
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:src="@drawable/ic_arrow_right"
-                    android:contentDescription="Go to Personal Details"/>
-            </LinearLayout>
-            <!-- Contact Details -->
-            <LinearLayout
-                android:id="@+id/card_Timetable"
-                android:layout_width="match_parent"
-                android:layout_height="60dp"
-                android:orientation="horizontal"
-                android:background="@drawable/rounded_bg"
-                android:paddingHorizontal="16dp"
-                android:gravity="center_vertical"
-                android:layout_marginBottom="12dp"
-                android:elevation="4dp"
-                android:clickable="true"
-                android:focusable="true"
-                android:foreground="?attr/selectableItemBackground">
-
-                <ImageView
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:src="@drawable/phoneblack"
-                    android:contentDescription="Contact Details Icon"
-                    app:tint="#1E5AA8" />
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:layout_weight="1"
-                    android:text="Time Table"
-                    android:textColor="#000"
-                    android:textSize="18sp" />
-
-                <ImageView
-                    android:id="@+id/arrow_contact_details"
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:src="@drawable/ic_arrow_right"
-                    android:contentDescription="Go to Contact Details"/>
-            </LinearLayout>
-
-            <!-- Postal Details -->
-            <LinearLayout
-                android:id="@+id/card_holiday"
-                android:layout_width="match_parent"
-                android:layout_height="60dp"
-                android:orientation="horizontal"
-                android:background="@drawable/rounded_bg"
-                android:paddingHorizontal="16dp"
-                android:gravity="center_vertical"
-                android:layout_marginBottom="12dp"
-                android:elevation="4dp"
-                android:clickable="true"
-                android:focusable="true"
-                android:foreground="?attr/selectableItemBackground">
-
-                <ImageView
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:src="@drawable/postaldetails"
-                    android:contentDescription="Postal Details Icon"
-                    app:tint="#1E5AA8" />
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:text="Holiday"
-                    android:textColor="#000"
-                    android:textSize="18sp"
-                    android:layout_marginStart="16dp"
-                    android:layout_weight="1"/>
-
-                <ImageView
-                    android:id="@+id/arrow_postal_details"
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:src="@drawable/ic_arrow_right"
-                    android:contentDescription="Go to Postal Details"/>
-            </LinearLayout>
-
-            <!-- About Us -->
-            <LinearLayout
-                android:id="@+id/card_about_us"
-                android:layout_width="match_parent"
-                android:layout_height="60dp"
-                android:orientation="horizontal"
-                android:background="@drawable/rounded_bg"
-                android:paddingHorizontal="16dp"
-                android:gravity="center_vertical"
-                android:layout_marginBottom="12dp"
-                android:elevation="4dp"
-                android:clickable="true"
-                android:focusable="true"
-                android:foreground="?attr/selectableItemBackground">
-
-                <ImageView
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:src="@drawable/aboutus"
-                    android:contentDescription="About Us Icon"
-                    app:tint="#1E5AA8"/>
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:text="About Us"
-                    android:textColor="#000"
-                    android:textSize="18sp"
-                    android:layout_marginStart="16dp"
-                    android:layout_weight="1"/>
-
-                <ImageView
-                    android:id="@+id/arrow_about_us"
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:src="@drawable/ic_arrow_right"
-                    android:contentDescription="Go to About Us"/>
-            </LinearLayout>
+<!--                <ImageView-->
+<!--                    android:id="@+id/arrow_about_us"-->
+<!--                    android:layout_width="24dp"-->
+<!--                    android:layout_height="24dp"-->
+<!--                    android:src="@drawable/ic_arrow_right"-->
+<!--                    android:contentDescription="Go to About Us"/>-->
+<!--            </LinearLayout>-->
 
             <!-- Privacy Policy -->
             <LinearLayout

@@ -28,11 +28,14 @@ public class LoginActivity extends AppCompatActivity {
 
     SharedPreferences studentPrefs, parentPrefs, timePrefs, timetabelPrefs;
     RequestQueue requestQueue;
+    private SessionManager sessionManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        sessionManager = new SessionManager(this);
 
         etUserId = findViewById(R.id.etUserId);
         etPassword = findViewById(R.id.etPassword);
@@ -46,8 +49,10 @@ public class LoginActivity extends AppCompatActivity {
 
         requestQueue = Volley.newRequestQueue(this);
 
-        // Skip login if already logged in
-        if (studentPrefs.getBoolean("isLoggedIn", false)) {
+        // Skip login if already logged in (use session manager)
+        if (sessionManager.isLoggedIn() || studentPrefs.getBoolean("isLoggedIn", false)) {
+            // Update last active time and go to MainActivity
+            sessionManager.updateLastActiveTime();
             startActivity(new Intent(LoginActivity.this, MainActivity.class));
             finish();
             return;
@@ -86,7 +91,6 @@ public class LoginActivity extends AppCompatActivity {
                 response -> {
                     btnLogin.setEnabled(true);
 
-                    // Your original naive success check (keeps it)
                     String result = response.replaceAll("[^a-zA-Z]", "").toLowerCase();
 
                     if (result.equals("success")) {
@@ -114,6 +118,10 @@ public class LoginActivity extends AppCompatActivity {
                         timeEditor.apply();
 
                         Log.d(TAG, "Saved mobile to prefs: " + userid + " (Timetable & Parent & Homework)");
+
+                        // Mark session logged in and set last active time
+                        sessionManager.setLoggedIn(true);
+                        sessionManager.updateLastActiveTime();
 
                         // Go to MainActivity
                         startActivity(new Intent(LoginActivity.this, MainActivity.class));

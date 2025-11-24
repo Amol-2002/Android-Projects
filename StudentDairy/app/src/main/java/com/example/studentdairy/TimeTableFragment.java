@@ -1,261 +1,308 @@
 package com.example.studentdairy;
 
+import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Typeface;
 import android.os.Bundle;
-import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ProgressBar;
-import android.widget.Toast;
+import android.widget.*;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.DividerItemDecoration;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
-import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.HttpHeaderParser;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.example.studentdairy.adapter.DayAdapter;
-import com.example.studentdairy.adapter.DayAdapterr;
-import com.example.studentdairy.model.DayItem;
-import com.example.studentdairy.model.PeriodModel;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-
-import static android.content.Context.MODE_PRIVATE;
+import java.util.*;
 
 public class TimetableFragment extends Fragment {
 
-    private static final String API_URL = "https://testing.trifrnd.net.in/ishwar/school/api/time_table_api.php";
-    private static final String TAG = "TimetableFragment_Debug";
-    private static final String REQ_TAG = "TimetableReq";
+    private final String[] DAYS = new String[]{"Mon","Tue","Wed","Thu","Fri","Sat"};
+
+    private LinearLayout daysContainer;
+    private View selectedPill;
+    private FrameLayout selectorFrame;
+    private TableLayout tableTimetable;
+    private LinearLayout emptyBox;
+    private ImageView emptyImage;
+    private TextView emptyText;
+    private ImageView attarrow;
 
     private RequestQueue requestQueue;
-    private String mobile = "";
-    private ProgressBar progress;
+    private Map<String, List<Period>> mapByDay = new HashMap<>();
 
-    // adapter + data
-    private DayAdapterr dayAdapter;
-    private final List<DayItem> dayItems = new ArrayList<>();
-
-    // desired day order
-    private final List<String> dayOrder = Arrays.asList(
-            "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"
-    );
-
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        // init queue
-        requestQueue = Volley.newRequestQueue(requireContext());
-
-        // read mobile from prefs
-        SharedPreferences timetabelPrefs =
-                requireActivity().getSharedPreferences("Timetable", MODE_PRIVATE);
-        mobile = timetabelPrefs.getString("mobile", "");
-        Log.d(TAG, "MOBILE FROM PREFS = " + mobile);
-    }
+    private static final String TIMETABLE_URL = "https://testing.trifrnd.net.in/ishwar/school/api/time_table_api.php";
 
     @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater,
+                             @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
 
-        View root = inflater.inflate(R.layout.fragment_timetable, container, false);
+        View view = inflater.inflate(R.layout.fragment_timetable, container, false);
 
-        RecyclerView rv = root.findViewById(R.id.rvTimetable);
-        progress = root.findViewById(R.id.progress);
+        daysContainer = view.findViewById(R.id.days_container);
+        selectedPill = view.findViewById(R.id.selected_pill);
+        selectorFrame = view.findViewById(R.id.selector_frame);
+        tableTimetable = view.findViewById(R.id.tableTimetable);
+        emptyBox = view.findViewById(R.id.emptyBox);
+        emptyImage = view.findViewById(R.id.emptyImage);
+        emptyText = view.findViewById(R.id.emptyText);
+        attarrow = view.findViewById(R.id.attarrow);
+        if (attarrow != null) attarrow.setOnClickListener(v -> requireActivity().onBackPressed());
 
-        // set up DayAdapter (one card per day)
-        dayAdapter = new DayAdapterr(dayItems);
-        rv.setLayoutManager(new LinearLayoutManager(requireContext()));
-        rv.setAdapter(dayAdapter);
-        rv.addItemDecoration(new DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL));
+        requestQueue = Volley.newRequestQueue(requireContext());
 
-        fetchTimetable();
+        // create day labels
+        for (int i = 0; i < DAYS.length; i++) {
+            final int idx = i;
+            TextView tv = new TextView(requireContext());
+            tv.setText(DAYS[i]);
+            tv.setTextSize(14);
+            tv.setTextColor(0xFFFFFFFF);
+            tv.setPadding(dp(18), dp(8), dp(18), dp(8));
+            tv.setGravity(Gravity.CENTER);
+            tv.setTag(i);
 
-        return root;
-    }
+            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.MATCH_PARENT);
+            tv.setLayoutParams(lp);
 
-    private void fetchTimetable() {
-        if (!isAdded()) { Log.w(TAG, "Fragment not added. Skip fetch."); return; }
-
-        if (mobile == null || mobile.trim().isEmpty()) {
-            Log.w(TAG, "Mobile missing - not calling API");
-            Toast.makeText(requireContext(), "Mobile not found. Please login.", Toast.LENGTH_LONG).show();
-            return;
+            tv.setOnClickListener(v -> onDaySelected(idx));
+            daysContainer.addView(tv);
         }
 
-        progress.setVisibility(View.VISIBLE);
+        // After layout ready, fetch data and select today's
+        daysContainer.post(this::fetchTimetableFromApi);
 
-        StringRequest req = new StringRequest(Request.Method.POST, API_URL, response -> {
-            if (!isAdded()) { Log.w(TAG, "Detached - ignoring response"); return; }
-            progress.setVisibility(View.GONE);
+        return view;
+    }
 
-            Log.d(TAG, "Raw server response (preview): " + (response == null ? "null" : response.substring(0, Math.min(response.length(), 1200))));
+    private void fetchTimetableFromApi() {
+        // read mobile from prefs inside request
+        SharedPreferences prefs = requireActivity().getSharedPreferences("StudentProfile", Context.MODE_PRIVATE);
+        String mobile = prefs.getString("mobile", prefs.getString("userid", ""));
+        if (mobile == null) mobile = "";
 
-            try {
-                List<PeriodModel> allPeriods = parseResponse(response);
+        StringRequest req = new StringRequest(Request.Method.POST, TIMETABLE_URL,
+                response -> {
+                    try {
+                        JSONArray outer = new JSONArray(response);
+                        if (outer.length() > 0) {
+                            JSONArray arr = outer.getJSONArray(0);
+                            mapByDay.clear();
+                            for (int i = 0; i < arr.length(); i++) {
+                                JSONObject obj = arr.getJSONObject(i);
+                                String day = obj.optString("day", "").trim();
+                                String subj = obj.optString("subject", "-");
+                                String teacher = obj.optString("teacher_name", "-");
+                                String start = obj.optString("start_time", "");
+                                String end = obj.optString("end_time", "");
+                                int perId = obj.optInt("peroid_id", 0);
 
-                // build ordered map of days -> periods
-                LinkedHashMap<String, List<PeriodModel>> byDay = new LinkedHashMap<>();
-                // initialize with dayOrder to keep order and show empty days (remove if you don't want empty days)
-                for (String d : dayOrder) byDay.put(d, new ArrayList<>());
+                                String shortDay = toShortDay(day);
+                                Period p = new Period(perId, shortDay, subj, teacher, start, end);
 
-                for (PeriodModel p : allPeriods) {
-                    String day = p.getDay();
-                    if (day == null || day.trim().isEmpty()) day = "Unknown";
-                    if (!byDay.containsKey(day)) byDay.put(day, new ArrayList<>());
-                    byDay.get(day).add(p);
-                }
+                                if (!mapByDay.containsKey(shortDay)) mapByDay.put(shortDay, new ArrayList<>());
+                                mapByDay.get(shortDay).add(p);
+                            }
 
-                // sort each day's periods by period id (or start time)
-                for (List<PeriodModel> list : byDay.values()) {
-                    list.sort((a, b) -> Integer.compare(a.getPeriodId(), b.getPeriodId()));
-                }
-
-                // build dayItems list (include all days; if you prefer to show only days with data, filter where list not empty)
-                dayItems.clear();
-                for (Map.Entry<String, List<PeriodModel>> e : byDay.entrySet()) {
-                    String dayName = e.getKey();
-                    List<PeriodModel> periods = e.getValue();
-                    dayItems.add(new DayItem(dayName, periods));
-                }
-
-                dayAdapter.notifyDataSetChanged();
-
-            } catch (Exception e) {
-                Log.e(TAG, "Parsing error", e);
-                if (isAdded()) Toast.makeText(requireContext(), "Invalid server response. Check Logcat.", Toast.LENGTH_LONG).show();
-            }
-
-        }, error -> {
-            if (!isAdded()) { Log.w(TAG, "Detached - ignoring error"); return; }
-            progress.setVisibility(View.GONE);
-            String serverBody = null;
-            if (error.networkResponse != null && error.networkResponse.data != null) {
-                try {
-                    serverBody = new String(error.networkResponse.data, HttpHeaderParser.parseCharset(error.networkResponse.headers, "utf-8"));
-                } catch (Exception ex) { serverBody = "could not decode body"; }
-            }
-            Log.e(TAG, "Network error: " + error.getMessage() + " body=" + serverBody);
-            if (isAdded()) Toast.makeText(requireContext(), "Network error. Check Logcat.", Toast.LENGTH_LONG).show();
-        }) {
+                            // sort each day by period id
+                            for (List<Period> list : mapByDay.values()) {
+                                Collections.sort(list, Comparator.comparingInt(o -> o.peroidId));
+                            }
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    } finally {
+                        // select today's day by default
+                        int todayIndex = indexForToday();
+                        if (todayIndex < 0 || todayIndex >= DAYS.length) todayIndex = 0;
+                        highlightPillImmediate(todayIndex);
+                        populateTableForDay(DAYS[todayIndex]);
+                    }
+                },
+                error -> {
+                    error.printStackTrace();
+                    Toast.makeText(requireContext(), "Failed to load timetable", Toast.LENGTH_SHORT).show();
+                    int todayIndex = indexForToday();
+                    highlightPillImmediate(todayIndex);
+                    populateTableForDay(DAYS[todayIndex]);
+                }) {
             @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                Map<String, String> p = new LinkedHashMap<>();
-                p.put("mobile", mobile);
-                Log.d(TAG, "POST params: " + p);
-                return p;
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<>();
+                params.put("mobile",
+                        requireActivity()
+                                .getSharedPreferences("Timetable", Context.MODE_PRIVATE)
+                                .getString("mobile", ""));
+                return params;
             }
+
         };
 
-        req.setTag(REQ_TAG);
         requestQueue.add(req);
     }
 
-    /**
-     * Robust parser: supports array shapes and object wrappers like:
-     * - [ [ {...}, ... ] ]
-     * - [ {...}, ... ]
-     * - { "success":..., "message": [...] }
-     * - { "data": [...] }
-     */
-    private List<PeriodModel> parseResponse(String response) throws Exception {
-        if (response == null) throw new Exception("Response null");
-        response = response.trim();
-        if (response.startsWith("<") || response.toLowerCase().contains("<html")) {
-            throw new Exception("HTML returned");
+    private void onDaySelected(int index) {
+        // visually move pill (simple immediate reposition)
+        highlightPillImmediate(index);
+        populateTableForDay(DAYS[index]);
+    }
+
+    private void highlightPillImmediate(int index) {
+        // set label colors
+        for (int i = 0; i < daysContainer.getChildCount(); i++) {
+            TextView t = (TextView) daysContainer.getChildAt(i);
+            if (i == index) t.setTextColor(0xFF1E4F7A); else t.setTextColor(0xFFFFFFFF);
         }
 
-        List<PeriodModel> list = new ArrayList<>();
-        try {
-            JSONArray root = new JSONArray(response);
-            if (root.length() > 0 && root.get(0) instanceof JSONArray) {
-                JSONArray inner = root.getJSONArray(0);
-                for (int i = 0; i < inner.length(); i++) list.add(jsonToPeriod(inner.getJSONObject(i)));
-            } else {
-                for (int i = 0; i < root.length(); i++) list.add(jsonToPeriod(root.getJSONObject(i)));
-            }
-            return list;
-        } catch (Exception exArray) {
-            JSONObject jobj = new JSONObject(response);
+        // position pill under selected label (no animation for simplicity)
+        View child = daysContainer.getChildAt(index);
+        if (child != null) {
+            int childLeft = child.getLeft();
+            int childWidth = child.getWidth();
+            int pillWidth = Math.max(dp(48), childWidth);
 
-            // handle { success:..., message:... }
-            if (jobj.has("message")) {
-                Object msg = jobj.get("message");
-                if (msg instanceof JSONArray) {
-                    JSONArray arr = jobj.getJSONArray("message");
-                    for (int i = 0; i < arr.length(); i++) list.add(jsonToPeriod(arr.getJSONObject(i)));
-                    return list;
-                } else if (msg instanceof JSONObject) {
-                    list.add(jsonToPeriod((JSONObject) msg));
-                    return list;
-                } else if (msg instanceof String) {
-                    Log.w(TAG, "Server message: " + msg);
-                    return new ArrayList<>(); // no data
-                }
-            }
+            ViewGroup.LayoutParams lp = selectedPill.getLayoutParams();
+            lp.width = pillWidth;
+            selectedPill.setLayoutParams(lp);
 
-            // handle { data: [...] }
-            if (jobj.has("data")) {
-                Object d = jobj.get("data");
-                if (d instanceof JSONArray) {
-                    JSONArray arr = jobj.getJSONArray("data");
-                    for (int i = 0; i < arr.length(); i++) list.add(jsonToPeriod(arr.getJSONObject(i)));
-                    return list;
-                } else if (d instanceof JSONObject) {
-                    list.add(jsonToPeriod((JSONObject) d));
-                    return list;
-                }
-            }
+            int target = childLeft + (childWidth - pillWidth)/2;
+            selectedPill.setTranslationX(target);
 
-            // search for any JSONArray in top-level keys
-            Iterator<String> keys = jobj.keys();
-            while (keys.hasNext()) {
-                String k = keys.next();
-                Object v = jobj.opt(k);
-                if (v instanceof JSONArray) {
-                    JSONArray arr = jobj.getJSONArray(k);
-                    for (int i = 0; i < arr.length(); i++) list.add(jsonToPeriod(arr.getJSONObject(i)));
-                    return list;
-                }
+            // scroll to center the chosen item
+            View parent = (View) daysContainer.getParent();
+            if (parent instanceof HorizontalScrollView) {
+                int scrollTo = childLeft - (((HorizontalScrollView) parent).getWidth() / 2) + (childWidth/2);
+                ((HorizontalScrollView) parent).smoothScrollTo(Math.max(scrollTo, 0), 0);
             }
-
-            throw new Exception("Unrecognized JSON keys");
         }
     }
 
-    private PeriodModel jsonToPeriod(JSONObject o) {
-        int pid = o.optInt("peroid_id", o.optInt("period_id", 0));
-        String day = o.optString("day", "");
-        String subject = o.optString("subject", "");
-        String teacher = o.optString("teacher_name", o.optString("teacher", ""));
-        String start = o.optString("start_time", o.optString("start", ""));
-        String end = o.optString("end_time", o.optString("end", ""));
-        return new PeriodModel(pid, day, subject, teacher, start, end);
+    private void populateTableForDay(String dayKey) {
+        tableTimetable.removeAllViews();
+
+        // add header row
+        TableRow header = new TableRow(requireContext());
+        header.setPadding(dp(8), dp(8), dp(8), dp(8));
+
+        TextView th1 = headerCell("Sr", true);
+        TextView th2 = headerCell("Time", true);
+        TextView th3 = headerCell("Subject", true);
+        TextView th4 = headerCell("Teacher", true);
+
+        header.addView(th1);
+        header.addView(th2);
+        header.addView(th3);
+        header.addView(th4);
+
+        tableTimetable.addView(header);
+
+        List<Period> list = mapByDay.get(dayKey);
+        if (list == null || list.isEmpty()) {
+            // show empty box
+            tableTimetable.setVisibility(View.GONE);
+            emptyBox.setVisibility(View.VISIBLE);
+            emptyText.setText("No schedule for " + dayKey);
+            return;
+        } else {
+            tableTimetable.setVisibility(View.VISIBLE);
+            emptyBox.setVisibility(View.GONE);
+        }
+
+        // add rows
+        for (int i = 0; i < list.size(); i++) {
+            Period p = list.get(i);
+            TableRow row = new TableRow(requireContext());
+            row.setPadding(dp(8), dp(10), dp(8), dp(10));
+            if (i % 2 == 1) row.setBackgroundColor(0x11FFFFFF); // subtle striping
+
+            TextView c1 = cell(String.valueOf(i+1), false);
+            TextView c2 = cell(p.start + " - " + p.end, false);
+            TextView c3 = cell(p.subject, false);
+            TextView c4 = cell(p.teacher, false);
+            // Make teacher italic
+            c4.setTypeface(null, Typeface.ITALIC);
+
+            row.addView(c1);
+            row.addView(c2);
+            row.addView(c3);
+            row.addView(c4);
+
+            tableTimetable.addView(row);
+        }
     }
 
-    @Override
-    public void onStop() {
-        super.onStop();
-        if (requestQueue != null) requestQueue.cancelAll(REQ_TAG);
+    private TextView headerCell(String txt, boolean bold) {
+        TextView tv = new TextView(requireContext());
+        tv.setText(txt);
+        tv.setPadding(dp(8), dp(4), dp(8), dp(4));
+        tv.setTypeface(null, bold ? Typeface.BOLD : Typeface.NORMAL);
+        tv.setTextColor(0xFF000000);
+        tv.setGravity(Gravity.CENTER_VERTICAL);
+        TableRow.LayoutParams lp = new TableRow.LayoutParams(0, TableRow.LayoutParams.WRAP_CONTENT, 1f);
+        tv.setLayoutParams(lp);
+        return tv;
+    }
+
+    private TextView cell(String txt, boolean bold) {
+        TextView tv = new TextView(requireContext());
+        tv.setText(txt);
+        tv.setPadding(dp(8), dp(6), dp(8), dp(6));
+        tv.setTextColor(0xFF111111);
+        tv.setGravity(Gravity.CENTER_VERTICAL);
+        TableRow.LayoutParams lp = new TableRow.LayoutParams(0, TableRow.LayoutParams.WRAP_CONTENT, 1f);
+        tv.setLayoutParams(lp);
+        if (bold) tv.setTypeface(null, Typeface.BOLD);
+        return tv;
+    }
+
+    private int indexForToday() {
+        Calendar c = Calendar.getInstance();
+        int w = c.get(Calendar.DAY_OF_WEEK);
+        switch (w) {
+            case Calendar.MONDAY: return 0;
+            case Calendar.TUESDAY: return 1;
+            case Calendar.WEDNESDAY: return 2;
+            case Calendar.THURSDAY: return 3;
+            case Calendar.FRIDAY: return 4;
+            case Calendar.SATURDAY: return 5;
+            default: return 0;
+        }
+    }
+
+    private String toShortDay(String fullDay) {
+        if (fullDay == null) return "";
+        fullDay = fullDay.trim().toLowerCase(Locale.ROOT);
+        if (fullDay.startsWith("mon")) return "Mon";
+        if (fullDay.startsWith("tue")) return "Tue";
+        if (fullDay.startsWith("wed")) return "Wed";
+        if (fullDay.startsWith("thu")) return "Thu";
+        if (fullDay.startsWith("fri")) return "Fri";
+        if (fullDay.startsWith("sat")) return "Sat";
+        return fullDay;
+    }
+
+    private int dp(int v) {
+        float density = requireContext().getResources().getDisplayMetrics().density;
+        return Math.round(v * density);
+    }
+
+    // small POJO
+    static class Period {
+        int peroidId;
+        String day, subject, teacher, start, end;
+        Period(int id, String d, String s, String t, String st, String en) {
+            this.peroidId = id; this.day = d; this.subject = s; this.teacher = t; this.start = st; this.end = en;
+        }
     }
 }

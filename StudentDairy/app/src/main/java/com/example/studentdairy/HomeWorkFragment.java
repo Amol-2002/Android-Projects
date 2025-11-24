@@ -1,25 +1,25 @@
 package com.example.studentdairy;
 
-import android.app.Activity;
+import android.app.DatePickerDialog;
+import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TableLayout;
-import android.widget.TableRow;
-import android.widget.TextView;
+import android.widget.DatePicker;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
-import android.content.Intent;
-import android.net.Uri;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
-import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.StringRequest;
@@ -28,174 +28,176 @@ import com.android.volley.toolbox.Volley;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 public class HomeWorkFragment extends Fragment {
 
-    TableLayout tableLayout;
-    private SharedPreferences prefs;
+    private TextView tvSelectedDate;
+    private Button btnPick, btnClear;
+    private RecyclerView rvHomework;
+    private TextView tvEmpty;
+
+    private HomeworkAdapter adapter;
+    private List<HomeworkAdapter.HomeworkItem> allItems = new ArrayList<>();
+    private List<HomeworkAdapter.HomeworkItem> filtered = new ArrayList<>();
+
+    private RequestQueue queue;
+    private SimpleDateFormat apiSdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+    private SimpleDateFormat displaySdf = new SimpleDateFormat("dd MMM yyyy", Locale.getDefault());
+
+    private static final String HW_URL = "https://testing.trifrnd.net.in/ishwar/school/api/homework_api.php";
 
     @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater,
-                             @Nullable ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-
         View view = inflater.inflate(R.layout.fragment_home_work, container, false);
 
-        // Find the ImageView
+        // Back arrow -> MainActivity
         ImageView attarrow = view.findViewById(R.id.attarrow);
-
-        // Click → Intent to MainActivity
         attarrow.setOnClickListener(v -> {
             Intent intent = new Intent(getActivity(), MainActivity.class);
             startActivity(intent);
         });
 
-        tableLayout = view.findViewById(R.id.tableLayout);
+        tvSelectedDate = view.findViewById(R.id.tvSelectedDate);
+        btnPick = view.findViewById(R.id.btnPickDate);
+        btnClear = view.findViewById(R.id.btnClear);
+        rvHomework = view.findViewById(R.id.rvHomework);
+        tvEmpty = view.findViewById(R.id.tvHwEmpty);
 
-        // ✅ Initialize SharedPreferences properly (inside onCreateView)
-        prefs = requireContext().getSharedPreferences("Homework", Activity.MODE_PRIVATE);
+        // make sure TextView acts like a button
+        tvSelectedDate.setClickable(true);
+        tvSelectedDate.setFocusable(true);
 
-        // ✅ Load data
-        loadHomeworkData();
+        // Open date picker when user clicks the TextView (same as btnPick)
+        tvSelectedDate.setOnClickListener(v -> showDatePicker());
+        btnPick.setOnClickListener(v -> showDatePicker());
+
+        // Optionally initialize tvSelectedDate to today's date
+        Date today = new Date();
+        tvSelectedDate.setText(displaySdf.format(today));
+
+        // If you want to auto-filter for today on launch, uncomment the next line:
+        // filterByDate(apiSdf.format(today));
+
+        rvHomework.setLayoutManager(new LinearLayoutManager(requireContext()));
+        adapter = new HomeworkAdapter(requireContext(), filtered);
+        rvHomework.setAdapter(adapter);
+
+        queue = Volley.newRequestQueue(requireContext());
+
+        btnClear.setOnClickListener(v -> {
+            tvSelectedDate.setText("Select date");
+            filtered.clear();
+            adapter.notifyDataSetChanged();
+            tvEmpty.setVisibility(View.GONE);
+            rvHomework.setVisibility(View.VISIBLE);
+        });
+
+        fetchHomework();
 
         return view;
     }
 
-    private void loadHomeworkData() {
-        String url = "https://testing.trifrnd.net.in/ishwar/school/api/homework_api.php";
+    private void fetchHomework() {
+        // get mobile from SharedPreferences (fallback to userid)
+        SharedPreferences prefs = requireActivity().getSharedPreferences("StudentProfile", Context.MODE_PRIVATE);
+        final String mobile = prefs.getString("mobile", prefs.getString("userid", ""));
+        // ensure non-null
+        // (not strictly necessary since prefs.getString won't return null when default provided,
+        // but keeps behavior explicit)
+        // if (mobile == null) mobile = "";
 
-        StringRequest request = new StringRequest(Request.Method.POST, url, response -> {
-            try {
-                JSONObject jsonObject = new JSONObject(response);
+        StringRequest req = new StringRequest(Request.Method.POST, HW_URL,
+                response -> {
+                    try {
+                        allItems.clear();
+                        JSONObject root = new JSONObject(response);
+                        if (root.has("data")) {
+                            JSONArray arr = root.getJSONArray("data");
+                            for (int i = 0; i < arr.length(); i++) {
+                                JSONObject obj = arr.getJSONObject(i);
+                                String subject = obj.optString("subject", "-");
+                                String hwDate = obj.optString("hw_date", "");
+                                String file = obj.optString("file_name", "");
+                                allItems.add(new HomeworkAdapter.HomeworkItem(subject, hwDate, file));
+                            }
+                        }
+                        // initially show nothing until user picks a date (you can change to show all)
+                        filtered.clear();
+                        adapter.notifyDataSetChanged();
+                        tvEmpty.setVisibility(View.GONE);
 
-                if (jsonObject.has("data")) {
-                    JSONArray dataArray = jsonObject.getJSONArray("data");
-
-                    for (int i = 0; i < dataArray.length(); i++) {
-                        JSONObject item = dataArray.getJSONObject(i);
-
-                        String subject = item.getString("subject");
-                        String date = item.getString("hw_date");
-                        String fileUrl = item.getString("file_name");
-
-                        addRow(i + 1, subject, date, fileUrl);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        Toast.makeText(requireContext(), "Parsing error", Toast.LENGTH_SHORT).show();
                     }
-                } else {
-                    Toast.makeText(getContext(), "No homework data found.", Toast.LENGTH_SHORT).show();
-                }
-
-            } catch (Exception e) {
-                e.printStackTrace();
-                Toast.makeText(getContext(), "Error parsing data", Toast.LENGTH_SHORT).show();
-            }
-        }, error -> Toast.makeText(getContext(), "Failed to load data", Toast.LENGTH_SHORT).show()) {
-
-            // ✅ Send mobile from SharedPreferences
+                },
+                error -> {
+                    error.printStackTrace();
+                    Toast.makeText(requireContext(), "Failed to load homework", Toast.LENGTH_SHORT).show();
+                }) {
             @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
+            protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<>();
-
-                String mobile = prefs.getString("mobile", "");
-                if (mobile.isEmpty()) {
-                    Toast.makeText(getContext(), "No mobile number found in SharedPreferences", Toast.LENGTH_SHORT).show();
-                }
-
+                // use the same mobile retrieved earlier or a preferred prefs key
                 params.put("mobile", mobile);
                 return params;
             }
         };
 
-        RequestQueue queue = Volley.newRequestQueue(requireContext());
-        queue.add(request);
+        queue.add(req);
     }
 
-    private void addRow(int srNo, String subject, String date, String fileUrl) {
-        TableRow row = new TableRow(getContext());
-        row.setPadding(8, 8, 8, 8);
+    private void showDatePicker() {
+        // default to today
+        Calendar c = Calendar.getInstance();
+        DatePickerDialog dpd = new DatePickerDialog(requireContext(),
+                (view, year, month, dayOfMonth) -> {
+                    Calendar sel = Calendar.getInstance();
+                    sel.set(year, month, dayOfMonth);
+                    String apiDate = apiSdf.format(sel.getTime()); // yyyy-MM-dd
+                    String display = displaySdf.format(sel.getTime());
+                    tvSelectedDate.setText(display);
+                    filterByDate(apiDate);
+                },
+                c.get(Calendar.YEAR),
+                c.get(Calendar.MONTH),
+                c.get(Calendar.DAY_OF_MONTH));
+        dpd.show();
+    }
 
-        // Serial Number
-        TextView srView = new TextView(getContext());
-        srView.setText(String.valueOf(srNo));
-        srView.setPadding(8, 8, 8, 8);
-        srView.setGravity(android.view.Gravity.CENTER);
+    private void filterByDate(String yyyyMMdd) {
+        filtered.clear();
+        for (HomeworkAdapter.HomeworkItem it : allItems) {
+            if (it.hwDate != null && it.hwDate.equals(yyyyMMdd)) {
+                filtered.add(it);
+            }
+        }
+        adapter.notifyDataSetChanged();
 
-        // Subject
-        TextView subjectView = new TextView(getContext());
-        subjectView.setText(subject);
-        subjectView.setPadding(8, 8, 8, 8);
-        subjectView.setGravity(android.view.Gravity.CENTER);
+        if (filtered.isEmpty()) {
+            tvEmpty.setVisibility(View.VISIBLE);
+            tvEmpty.setText("No homework for " + formatDisplayDate(yyyyMMdd));
+            rvHomework.setVisibility(View.GONE);
+        } else {
+            tvEmpty.setVisibility(View.GONE);
+            rvHomework.setVisibility(View.VISIBLE);
+        }
+    }
 
-        // Date
-        TextView dateView = new TextView(getContext());
-        dateView.setText(date);
-        dateView.setPadding(8, 8, 8, 8);
-        dateView.setGravity(android.view.Gravity.CENTER);
+    private String formatDisplayDate(String yyyyMMdd) {
+        try {
+            Date d = apiSdf.parse(yyyyMMdd);
+            return displaySdf.format(d);
+        } catch (Exception e) { return yyyyMMdd; }
+    }
 
-        // File Button
-        Button fileButton = new Button(getContext());
-        fileButton.setText("View");
-        fileButton.setPadding(8, 8, 8, 8);
-        fileButton.setOnClickListener(v -> {
-            String fullUrl = fileUrl.startsWith("http") ?
-                    fileUrl : "https://testing.trifrnd.net.in/ishwar/school/" + fileUrl;
-            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(fullUrl));
-            startActivity(intent);
-        });
-
-        row.addView(srView);
-        row.addView(subjectView);
-        row.addView(dateView);
-        row.addView(fileButton);
-
-        tableLayout.addView(row);
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        if (queue != null) queue.cancelAll(this);
     }
 }
-
-
-//package com.example.studentdairy;
-//
-//import android.annotation.SuppressLint;
-//import android.os.Bundle;
-//import androidx.annotation.NonNull;
-//import androidx.annotation.Nullable;
-//import androidx.fragment.app.Fragment;
-//
-//import android.view.LayoutInflater;
-//import android.view.View;
-//import android.view.ViewGroup;
-//
-//import com.google.android.material.tabs.TabLayout;
-//
-//public class HomeWorkFragment extends Fragment {
-//    private TabLayout tabLayout;
-//    public HomeWorkFragment() {}
-//
-//    @SuppressLint("MissingInflatedId")
-//    @Nullable
-//    @Override
-//    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
-//                             @Nullable Bundle savedInstanceState) {
-//        View view = inflater.inflate(R.layout.fragment_home_work, container, false);
-//
-////        spinnerCourse = view.findViewById(R.id.spinnerCourse);
-//        tabLayout = view.findViewById(R.id.tabLayout);
-//
-//
-//        // Add tabs
-//        tabLayout.addTab(tabLayout.newTab().setText("Mon"));
-//        tabLayout.addTab(tabLayout.newTab().setText("Tue"));
-//        tabLayout.addTab(tabLayout.newTab().setText("Wen"));
-//        tabLayout.addTab(tabLayout.newTab().setText("Thu"));
-//        tabLayout.addTab(tabLayout.newTab().setText("Fri"));
-//        tabLayout.addTab(tabLayout.newTab().setText("Sat"));
-//
-//        return view;
-//    }
-//
-//    }
-//
-
-

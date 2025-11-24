@@ -23,6 +23,11 @@ import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+
+
 import org.json.JSONObject;
 
 import java.util.HashMap;
@@ -40,6 +45,24 @@ public class ParentProfileFragment extends Fragment {
 
     private TextView tvParentName;
     private SharedPreferences prefs;
+
+    private String formatPrettyDate(String rawDate) {
+        if (rawDate == null || rawDate.trim().isEmpty()) return "-";
+
+        try {
+            SimpleDateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+            Date date = inputFormat.parse(rawDate);
+
+            SimpleDateFormat outputFormat = new SimpleDateFormat("d MMM yyyy", Locale.getDefault());
+            return outputFormat.format(date); // Example: 1 Jun 2023
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return rawDate; // If parsing fails, return original
+        }
+    }
+
+
 
     @Nullable
     @Override
@@ -62,8 +85,7 @@ public class ParentProfileFragment extends Fragment {
             startActivity(intent);
         });
 
-        imgProfile = view.findViewById(R.id.imgProfile);
-        btnChangeProfile = view.findViewById(R.id.btnChangeProfile);
+
         etFullName = view.findViewById(R.id.etFullName);
         etMiddleName = view.findViewById(R.id.etMiddleName);
         etLastName = view.findViewById(R.id.etLastName);
@@ -94,7 +116,6 @@ public class ParentProfileFragment extends Fragment {
             Toast.makeText(getContext(), "Parent mobile not found. Please login again.", Toast.LENGTH_SHORT).show();
         }
 
-        btnChangeProfile.setOnClickListener(v -> openGallery());
     }
 
     private void loadLocalData() {
@@ -173,7 +194,7 @@ public class ParentProfileFragment extends Fragment {
                             // Update full name on profile screen
                             setParentFullName(tvParentName);
 
-                            Toast.makeText(getContext(), "Profile loaded successfully", Toast.LENGTH_SHORT).show();
+
 
                         } else {
                             Toast.makeText(getContext(), "Profile not found", Toast.LENGTH_SHORT).show();
@@ -197,20 +218,6 @@ public class ParentProfileFragment extends Fragment {
         queue.add(request);
     }
 
-    // Gallery Picker
-    private void openGallery() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            if (ContextCompat.checkSelfPermission(requireContext(),
-                    Manifest.permission.READ_MEDIA_IMAGES) != PackageManager.PERMISSION_GRANTED) {
-                requestPermissions(new String[]{Manifest.permission.READ_MEDIA_IMAGES}, REQUEST_PERMISSION);
-            } else pickImage();
-        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if (ContextCompat.checkSelfPermission(requireContext(),
-                    Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-                requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, REQUEST_PERMISSION);
-            } else pickImage();
-        } else pickImage();
-    }
 
     private void pickImage() {
         Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
