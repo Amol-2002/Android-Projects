@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".CalenderFragment">
+
+    <LinearLayout
+        android:background="@drawable/header_bg"
+        android:backgroundTint="#1E5AA8"
+        android:layout_width="match_parent"
+        android:layout_height="90dp"
+        android:orientation="horizontal"
+        android:paddingHorizontal="20dp"
+        android:paddingVertical="12dp"
+        android:elevation="6dp">
+
+        <!-- Left side (Image + Text together) -->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:layout_marginTop="22dp"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+
+            <!-- Image on Left -->
+            <ImageView
+                android:id="@+id/attarrow"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:src="@drawable/arrowback"
+                android:layout_marginEnd="10dp"
+                app:tint="@android:color/white"/>
+
+            <!-- Text on Right -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Calender"
+                android:textColor="@color/white"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_marginTop="90dp"
+        android:padding="16dp">
+
+        <!-- Calendar View -->
+        <CalendarView
+            android:background="@drawable/rounded_bg"
+            android:id="@+id/calendarView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:dateTextAppearance="@android:style/TextAppearance.Small"
+            android:weekDayTextAppearance="@android:style/TextAppearance.Medium"
+            android:focusedMonthDateColor="@android:color/black"
+            android:unfocusedMonthDateColor="@android:color/darker_gray"
+            android:weekNumberColor="@android:color/transparent"
+            android:weekSeparatorLineColor="@android:color/transparent"/>
+
+        <!-- Selected Date Text -->
+        <TextView
+            android:id="@+id/tvSelectedDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp"
+            android:text="Select a date"
+
+            android:background="@drawable/rounded_bg"
+            android:textSize="16sp"
+            android:textStyle="bold"/>
+
+    </LinearLayout>
+</FrameLayout>

@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:paddingVertical="4dp"
+    android:paddingHorizontal="6dp">
+
+    <TextView
+        android:id="@+id/tvSrNo"
+        android:layout_width="20dp"
+        android:layout_height="wrap_content"
+        android:text="1"
+        android:textSize="12sp" />
+
+    <TextView
+        android:id="@+id/tvStudentName"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+
+        android:text="Student Name"
+        android:textSize="12sp" />
+
+    <!-- 31 day cells -->
+    <TextView android:id="@+id/tvD1"  style="@style/DayCellStyle"/>
+    <TextView android:id="@+id/tvD2"  style="@style/DayCellStyle"/>
+    <TextView android:id="@+id/tvD3"  style="@style/DayCellStyle"/>
+    <TextView android:id="@+id/tvD4"  style="@style/DayCellStyle"/>
+    <TextView android:id="@+id/tvD5"  style="@style/DayCellStyle"/>
+    <TextView android:id="@+id/tvD6"  style="@style/DayCellStyle"/>
+    <TextView android:id="@+id/tvD7"  style="@style/DayCellStyle"/>
+    <TextView android:id="@+id/tvD8"  style="@style/DayCellStyle"/>
+    <TextView android:id="@+id/tvD9"  style="@style/DayCellStyle"/>
+    <TextView android:id="@+id/tvD10" style="@style/DayCellStyle"/>
+    <TextView android:id="@+id/tvD11" style="@style/DayCellStyle"/>
+    <TextView android:id="@+id/tvD12" style="@style/DayCellStyle"/>
+    <TextView android:id="@+id/tvD13" style="@style/DayCellStyle"/>
+    <TextView android:id="@+id/tvD14" style="@style/DayCellStyle"/>
+    <TextView android:id="@+id/tvD15" style="@style/DayCellStyle"/>
+    <TextView android:id="@+id/tvD16" style="@style/DayCellStyle"/>
+    <TextView android:id="@+id/tvD17" style="@style/DayCellStyle"/>
+    <TextView android:id="@+id/tvD18" style="@style/DayCellStyle"/>
+    <TextView android:id="@+id/tvD19" style="@style/DayCellStyle"/>
+    <TextView android:id="@+id/tvD20" style="@style/DayCellStyle"/>
+    <TextView android:id="@+id/tvD21" style="@style/DayCellStyle"/>
+    <TextView android:id="@+id/tvD22" style="@style/DayCellStyle"/>
+    <TextView android:id="@+id/tvD23" style="@style/DayCellStyle"/>
+    <TextView android:id="@+id/tvD24" style="@style/DayCellStyle"/>
+    <TextView android:id="@+id/tvD25" style="@style/DayCellStyle"/>
+    <TextView android:id="@+id/tvD26" style="@style/DayCellStyle"/>
+    <TextView android:id="@+id/tvD27" style="@style/DayCellStyle"/>
+    <TextView android:id="@+id/tvD28" style="@style/DayCellStyle"/>
+    <TextView android:id="@+id/tvD29" style="@style/DayCellStyle"/>
+    <TextView android:id="@+id/tvD30" style="@style/DayCellStyle"/>
+    <TextView android:id="@+id/tvD31" style="@style/DayCellStyle"/>
+</LinearLayout>

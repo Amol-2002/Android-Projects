@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Primary app colors (change hex values to match your theme) -->
+    <color name="colorPrimary">#0D6E71</color>
+    <color name="colorPrimaryDark">#09514f</color>
+    <color name="colorAccent">#FF7A59</color>
+
+    <!-- Bottom nav text/icon colors -->
+    <color name="bottom_nav_selected">#0D6E71</color> <!-- same as colorPrimary -->
+    <color name="bottom_nav_unselected">#757575</color> <!-- grey for unselected -->
+
+    <!-- ripple / overlay -->
+    <color name="ripple_color">#220D6E71</color>
+
+    <!-- common -->
+    <color name="white">#FFFFFF</color>
+    <color name="black">#000000</color>
+
+    <color name="brandBlue">#1E5AA8</color>
+    <color name="brandBlueDark">#1E5AA8</color> <!-- optional but recommended -->
+
+</resources>
