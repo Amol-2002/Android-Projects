@@ -94,11 +94,11 @@
 
             <Button
                 android:id="@+id/btnPickDate"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="1dp"
+                android:layout_height="1dp"
                 android:layout_marginStart="8dp"
-                android:backgroundTint="#1E5AA8"
                 android:background="@drawable/rounded_bg"
+                android:backgroundTint="#1E5AA8"
                 android:text="Pick Date" />
 
             <Button

@@ -31,6 +31,7 @@
         <item name="android:layout_height">34dp</item>
         <item name="android:gravity">center</item>
         <item name="android:textSize">11sp</item>
+        <item name="android:textStyle">bold</item>
         <item name="android:background">@drawable/day_cell_bg</item>
     </style>
 

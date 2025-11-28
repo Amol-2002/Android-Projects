@@ -2,14 +2,14 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
+    android:orientation="horizontal"
     android:background="@drawable/rounded_bg"
     android:layout_marginBottom="10dp"
     android:padding="10dp">
 
     <TextView
         android:id="@+id/subject"
-        android:layout_width="match_parent"
+        android:layout_width="100dp"
         android:layout_height="wrap_content"
         android:text="Subject"
         android:textSize="16sp"
@@ -17,15 +17,15 @@
 
     <TextView
         android:id="@+id/hw_date"
-        android:layout_width="match_parent"
+        android:layout_width="100dp"
         android:layout_height="wrap_content"
         android:text="2024-09-17"
         android:textSize="14sp"
-        android:layout_marginTop="4dp"/>
+       />
 
     <TextView
         android:id="@+id/file_name"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="40dp"
         android:text=" View attachment "
         android:textSize="14sp"

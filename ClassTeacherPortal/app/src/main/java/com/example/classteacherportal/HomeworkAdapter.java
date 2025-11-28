@@ -9,13 +9,16 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.Locale;
 
 public class HomeworkAdapter extends RecyclerView.Adapter<HomeworkAdapter.VH> {
 
     private final List<HomeworkItem> list;
     private final Context ctx;
     private final String baseUrl = "https://testing.trifrnd.net.in/ishwar/school/"; // adjust if needed
+    private SimpleDateFormat displaySdf = new SimpleDateFormat("dd MMM yyyy", Locale.getDefault());
 
     public HomeworkAdapter(Context ctx, List<HomeworkItem> list) {
         this.ctx = ctx;
@@ -32,12 +35,25 @@ public class HomeworkAdapter extends RecyclerView.Adapter<HomeworkAdapter.VH> {
     public void onBindViewHolder(VH holder, int position) {
         HomeworkItem it = list.get(position);
         holder.tvSubject.setText(it.subject);
-        holder.tvDate.setText(it.hwDate);
-        holder.tvFile.setText(it.fileName != null && !it.fileName.isEmpty() ? "View attachment" : "No attachment");
+
+        // 🔥 Format date
+        try {
+            SimpleDateFormat in = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+            SimpleDateFormat out = new SimpleDateFormat("dd MMM yyyy", Locale.getDefault());
+            String formatted = out.format(in.parse(it.hwDate));
+            holder.tvDate.setText(formatted);
+        } catch (Exception e) {
+            holder.tvDate.setText(it.hwDate);
+        }
+
+        holder.tvFile.setText(it.fileName != null && !it.fileName.isEmpty()
+                ? "View attachment" : "No attachment");
 
         holder.tvFile.setOnClickListener(v -> {
             if (it.fileName == null || it.fileName.isEmpty()) return;
-            String full = it.fileName.startsWith("http") ? it.fileName : (baseUrl + it.fileName.replaceFirst("^\\.*/?", ""));
+            String full = it.fileName.startsWith("http")
+                    ? it.fileName
+                    : (baseUrl + it.fileName.replaceFirst("^\\.*/?", ""));
             try {
                 Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(full));
                 ctx.startActivity(intent);
