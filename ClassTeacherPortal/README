@@ -1,3 +1,23 @@
+| Module                     | Description                                           |
+| -------------------------- | ----------------------------------------------------- |
+| 🔐 Login                   | Secure login using Staff ID                           |
+| 🧑‍🏫 Teacher Dashboard    | Overview of teacher name, profile & quick actions        |
+| 🧮 Attendance System       | Mark daily attendance, prevents duplicate submissions |
+| 📅 Monthly Attendance View | Displays full month attendance in grid format         |
+| 📝 Homework Management     | Add homework with PDF/Image attachment                |
+| ⏰ Timetable Screen         | Displays daily class schedule for the teacher        |
+| 👨‍🎓 Student Details      | Auto-fetch class & section with student list             |
+| 👤 Profile & Logout        | Session handling using SharedPreferences              |
+
+| Component    | Technology                              |
+| ------------ | --------------------------------------- |
+| Frontend     | Java, XML                               |
+| Architecture | MVC Pattern                             |
+| Backend      | PHP                                     |
+| Database     | MySQL                                   |
+| API          | REST API                                |
+| Libraries    | Volley, RecyclerView, SharedPreferences |
+
 # 📚 ClassTeacherPortal — Android App
 
 > A complete Android application for school teachers to manage attendance, homework, timetable, and student data. Built using Java and XML with backend APIs for data persistence.  
