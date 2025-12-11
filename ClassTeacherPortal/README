@@ -1,0 +1,111 @@
+| Module                     | Description                                           |
+| -------------------------- | ----------------------------------------------------- |
+| 🔐 Login                   | Secure login using Staff ID                           |
+| 🧑‍🏫 Teacher Dashboard    | Overview of teacher name, profile & quick actions        |
+| 🧮 Attendance System       | Mark daily attendance, prevents duplicate submissions |
+| 📅 Monthly Attendance View | Displays full month attendance in grid format         |
+| 📝 Homework Management     | Add homework with PDF/Image attachment                |
+| ⏰ Timetable Screen         | Displays daily class schedule for the teacher        |
+| 👨‍🎓 Student Details      | Auto-fetch class & section with student list             |
+| 👤 Profile & Logout        | Session handling using SharedPreferences              |
+
+| Component    | Technology                              |
+| ------------ | --------------------------------------- |
+| Frontend     | Java, XML                               |
+| Architecture | MVC Pattern                             |
+| Backend      | PHP                                     |
+| Database     | MySQL                                   |
+| API          | REST API                                |
+| Libraries    | Volley, RecyclerView, SharedPreferences |
+
+# 📚 ClassTeacherPortal — Android App
+
+> A complete Android application for school teachers to manage attendance, homework, timetable, and student data. Built using Java and XML with backend APIs for data persistence.  
+
+## 🚀 Project Overview
+
+ClassTeacherPortal is built to digitize and streamline the day-to-day classroom management tasks for teachers. Instead of paper-based records, this app allows marking attendance, uploading homework, managing timetables, and fetching class/student details via API — all from a mobile device.
+
+**Core Purpose:**  
+- Simplify attendance tracking (daily and monthly views)  
+- Enable teachers to assign homework with attachments  
+- Provide class & section management, student lists  
+- Maintain teacher login and profile via secure API-based authentication  
+
+---
+
+## 📦 Features
+
+- 🔐 **Login Authentication** — Secure teacher login using staff ID  
+- 📅 **Attendance Module**  
+  - Mark daily attendance for students  
+  - Prevent duplicate attendance submission for the same date  
+  - View monthly attendance in a calendar-style grid (per student per date)  
+- 📝 **Homework Module**  
+  - Add homework with subject, date and optional file (PDF / Image)  
+  - View list of homework entries and download attachments  
+- 👨‍🎓 **Student & Class Management**  
+  - Fetch class & section based on logged-in teacher  
+  - Display student list for selected class/section  
+- 🗓️ **Timetable and Other Utilities** *(if implemented)*  
+- 📱 **Clean UI using Android XML layouts**  
+- 🌐 **Backend Communication with REST APIs** using Volley library  
+- 🔁 **Session Management** via SharedPreferences  
+
+---
+
+## 🧰 Tech Stack & Tools
+
+| Layer | Technology / Library |
+|-------|----------------------|
+| Language | Java |
+| UI / Layout | Android XML (Layouts, RecyclerView, Adapters) |
+| Networking | Volley (HTTP POST / GET) |
+| Data Storage | Remote PHP + MySQL backend via REST APIs |
+| Local Storage | SharedPreferences (for login/session info) |
+| Android Version | Use compatible SDK versions (as per project config) |
+
+---
+
+## 📂 Project Structure (simplified)
+lassTeacherPortal/
+│
+├── app/src/main/java/com/example/classteacherportal/
+│ ├── LoginActivity.java
+│ ├── MainActivity.java
+│ ├── fragments/ # Fragments for Homework, Attendance, ViewAttendance etc
+│ ├── adapters/ # RecyclerView / grid adapters
+│ ├── network/ # API request code (Volley)
+│ └── ... # other helper classes
+│
+├── app/src/main/res/layout/ # XML layout files
+├── app/src/main/res/drawable/ # Drawables, styles, backgrounds
+├── app/src/main/AndroidManifest.xml
+└── README.md # ← you should place this file here
+
+
+---
+
+## 🔧 Setup & Installation
+
+1. Clone the repository:
+
+    ```bash
+    git clone https://github.com/Amol-2002/Android-Projects.git
+    cd Android-Projects/ClassTeacherPortal
+    ```
+
+2. Open this folder in **Android Studio**  
+   - Let Gradle sync and build the project  
+   - Ensure you have required Android SDK & build tools installed  
+
+3. Configure Backend API URLs (if needed)  
+   - Search for API endpoint definitions (e.g. in constants or inside code)  
+   - Update base URLs if your server domain/path differs  
+
+4. Build & run the app  
+   - Either run on an emulator or real Android device  
+   ```bash
+   flutter run  # if using Flutter; else use Android Studio “Run” button
+
+                                     
