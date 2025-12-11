@@ -1,8 +1,0 @@
-<resources>
-    <color name="astroYellow">#F6D730</color>  <!-- main yellow -->
-    <color name="astroBlack">#000000</color>
-    <color name="astroGreyText">#808080</color>
-    <color name="astroBlue">#0A66FF</color>   <!-- Truecaller text blue -->
-    <color name="white">#FFFFFFFF</color>
-
-</resources>
