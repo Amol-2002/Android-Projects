@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="120dp"
+    android:layout_height="185dp"
+    android:layout_margin="8dp"
+    app:cardCornerRadius="16dp"
+    app:cardUseCompatPadding="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:padding="8dp">
+
+        <ImageView
+            android:id="@+id/imgAstrologer"
+            android:layout_width="65dp"
+            android:layout_height="65dp"
+            android:src="@drawable/user"
+            android:background="@drawable/bg_circle"
+            android:padding="4dp" />
+
+
+        <TextView
+            android:layout_marginTop="5dp"
+            android:id="@+id/tvAstrologerName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Name"
+            android:textStyle="bold"
+            android:textSize="20sp" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            >
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="₹ 70/"
+                android:textSize="15dp"
+                android:textColor="@color/astroGreyText"
+                android:textStyle="bold"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="min"
+                android:textColor="@color/astroGreyText"
+                />
+
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="   Chat   "
+            android:textSize="12sp"
+            android:layout_marginTop="5dp"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
+            android:textStyle="bold"
+            android:background="@drawable/chat_button"
+            android:textColor="#08BF11"/>
+
+        <Button
+            android:id="@+id/btnChat"
+            android:layout_width="1dp"
+            android:layout_height="1dp"
+            android:text="Chat"
+            android:layout_gravity="center"
+            android:textColor="@color/astroBlack"
+            android:gravity="center"
+            android:textAllCaps="false"
+            android:backgroundTint="@color/astroYellow"
+          />
+
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>
